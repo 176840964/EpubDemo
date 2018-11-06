@@ -21,7 +21,7 @@
         self.fontArr = [NSArray arrayWithObjects:dic1, dic2, nil];
         self.currentFontIndex = 0;
         
-        self.currentSpacingIndex = 3;
+        self.currentSpacingIndex = 2;
         
         NSDictionary *theme1 = @{@"body": @"#ffffff", @"text": @"#000000"};
         NSDictionary *theme2 = @{@"body": @"#000000", @"text": @"#ffffff"};

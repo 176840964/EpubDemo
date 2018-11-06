@@ -459,8 +459,8 @@
 }
 
 - (void)fontSettingView:(FontSettingView *)fontSettingView selectSpacingWithIndex:(NSInteger)index {
-    if (self.parserManager.settingManager.currentSpacingIndex != index + 1) {
-        self.parserManager.settingManager.currentSpacingIndex = index + 1;
+    if (self.parserManager.settingManager.currentSpacingIndex != index) {
+        self.parserManager.settingManager.currentSpacingIndex = index;
         [self showPageViewController];
     }
 }

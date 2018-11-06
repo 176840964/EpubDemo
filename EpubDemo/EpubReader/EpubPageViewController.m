@@ -92,25 +92,11 @@
     CGFloat pageOffset = pageIndex * self.pageWebview.bounds.size.width;
     
     NSString* goToOffsetFunc = [NSString stringWithFormat:@" function pageScroll(xOffset){ window.scroll(xOffset,0); } "];
-    NSString* goTo =[NSString stringWithFormat:@"pageScroll(%f)", pageOffset];
+    NSString* goTo = [NSString stringWithFormat:@"pageScroll(%f)", pageOffset];
     
     [self.pageWebview stringByEvaluatingJavaScriptFromString:goToOffsetFunc];
     [self.pageWebview stringByEvaluatingJavaScriptFromString:goTo];
     
-    //背景主题
-    NSString *themeBodyColor = [self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"body"];
-    NSString *bodycolor = [NSString stringWithFormat:@"addCSSRule('body', 'background-color: %@;')",themeBodyColor];
-    [self.pageWebview stringByEvaluatingJavaScriptFromString:bodycolor];
-
-    NSString *themeTextColor=[self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"text"];
-    NSString *textcolor1=[NSString stringWithFormat:@"addCSSRule('h1', 'color: %@;')",themeTextColor];
-    [self.pageWebview stringByEvaluatingJavaScriptFromString:textcolor1];
-    NSString *textcolor2=[NSString stringWithFormat:@"addCSSRule('h2', 'color: %@;')",themeTextColor];
-    [self.pageWebview stringByEvaluatingJavaScriptFromString:textcolor2];
-    NSString *textcolor3=[NSString stringWithFormat:@"addCSSRule('p', 'color: %@;')",themeTextColor];
-    [self.pageWebview stringByEvaluatingJavaScriptFromString:textcolor3];
-    
-    //刷新显示文本
     [self reloadSubviews];
 }
 
@@ -171,18 +157,6 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)theWebView {
-    NSLog(@"结束了");
-//    self.pageWebview.hidden=NO;
-    
-    NSString *insertRule1 = [NSString stringWithFormat:@"addCSSRule('html', 'padding: 0px; height: %fpx; -webkit-column-gap: 0px; -webkit-column-width: %fpx;')", theWebView.frame.size.height, theWebView.frame.size.width];
-    
-    NSString *setTextSizeRule = [NSString stringWithFormat:@"addCSSRule('body', ' font-size:%@px;')", @(self.parserManager.settingManager.currentTextSize)];
-    NSString *setTextSizeRule2 = [NSString stringWithFormat:@"addCSSRule('p', ' font-size:%@px;')", @(self.parserManager.settingManager.currentTextSize)];
-    
-    [theWebView stringByEvaluatingJavaScriptFromString:insertRule1];
-    [theWebView stringByEvaluatingJavaScriptFromString:setTextSizeRule];
-    [theWebView stringByEvaluatingJavaScriptFromString:setTextSizeRule2];
-    
     BOOL isCalc = [self.parserManager.chapterPageInfoDic.allKeys containsObject:self.chapterFileNameStr];
     
     if (!isCalc && self.chapterIndex > -1) {
@@ -244,9 +218,15 @@
     //                      ,@"}"
     //                      ,@"}"
     //                      ,@"addCSSRule('p', 'text-align: justify;');"
+    //                      ,@"addCSSRule('p', 'line-height: 1;');"
     //                      ,@"addCSSRule('highlight', 'background-color: yellow;');"
     //                      //,@"addCSSRule('body', '-webkit-text-size-adjust: 100%; font-size:10px;');"
     //                      ,@"addCSSRule('body', ' font-size:18px;');"
+    //                      ,@"addCSSRule('body', ' font-family:\"fontName\"');"
+    //                      ,@"addCSSRule('body', ' background-color:#000000');"
+    //                      ,@"addCSSRule('h1', ' color:#ffffff"');"
+    //                      ,@"addCSSRule('h2', ' color:#ffffff"');"
+    //                      ,@"addCSSRule('p', ' color:#ffffff"');"
     //                      ,@"addCSSRule('body', ' margin:2.2em 5%% 0 5%%;');"   //上，右，下，左 顺时针
     //                      ,@"addCSSRule('html', 'padding: 0px; height: 480px; -webkit-column-gap: 0px; -webkit-column-width: 320px;');"
     //                      ,@"</script>"];
@@ -263,24 +243,36 @@
     [arrJs addObject:@"}"];
     [arrJs addObject:@"}"];
     
-    
     [arrJs addObject:@"addCSSRule('p', 'text-align: justify;');"];
-    
-    NSString *addcss_spacing = [NSString stringWithFormat:@"addCSSRule('p', 'line-height: %@;');", @(self.parserManager.settingManager.currentSpacingIndex)];
-    [arrJs addObject:addcss_spacing];//字的行间距 默认是1 或者 使用px方式 默认值是20px
-//    [arrJs addObject:@"addCSSRule('p.content', 'line-height: 2;');"];
-    
-    [arrJs addObject:@"addCSSRule('highlight', 'background-color: ffffff;');"];//高亮背景色
-//    {
-//        NSString *addcss_fontSize = [NSString stringWithFormat:@"addCSSRule('body', ' font-size:%@px;');", @(self.parserManager.settingManager.currentTextSize)];
-//        [arrJs addObject:addcss_fontSize];
-//    }
-    {
+    {//行间距
+        NSString *addcss_spacing = [NSString stringWithFormat:@"addCSSRule('p', 'line-height: %@;');", @(self.parserManager.settingManager.currentSpacingIndex)];
+        [arrJs addObject:addcss_spacing];//字的行间距 默认是1 或者 使用px方式 默认值是20px
+    }
+    {//搜索高亮
+        [arrJs addObject:@"addCSSRule('highlight', 'background-color: ffffff;');"];//高亮背景色
+    }
+    {//字号
+        NSString *addcss_fontSize = [NSString stringWithFormat:@"addCSSRule('body', ' font-size:%@px;');", @(self.parserManager.settingManager.currentTextSize)];
+        [arrJs addObject:addcss_fontSize];
+    }
+    {//字体
         NSString *fontName = [[self.parserManager.settingManager.fontArr objectAtIndex:self.parserManager.settingManager.currentFontIndex] objectForKey:@"fontName"];
         NSString *addcss_font = [NSString stringWithFormat:@"addCSSRule('body', ' font-family:\"%@\";');", fontName];
         [arrJs addObject:addcss_font];
     }
-    
+    {//背景主题
+        NSString *themeBodyColor = [self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"body"];
+        NSString *addcss_bodyColor = [NSString stringWithFormat:@"addCSSRule('body', 'background-color: %@;')", themeBodyColor];
+        [arrJs addObject:addcss_bodyColor];
+        
+        NSString *themeTextColor=[self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"text"];
+        NSString *addcss_h1TextColor = [NSString stringWithFormat:@"addCSSRule('h1', 'color: %@;')", themeTextColor];
+        [arrJs addObject:addcss_h1TextColor];
+        NSString *addcss_h2TextColor = [NSString stringWithFormat:@"addCSSRule('h2', 'color: %@;')", themeTextColor];
+        [arrJs addObject:addcss_h2TextColor];
+        NSString *addcss_pTextColor = [NSString stringWithFormat:@"addCSSRule('p', 'color: %@;')", themeTextColor];
+        [arrJs addObject:addcss_pTextColor];
+    }
     [arrJs addObject:@"addCSSRule('body', ' margin:0 0 0 0;');"];//上，右，下，左 顺时针
     {
         NSString *css1=[NSString stringWithFormat:@"addCSSRule('html', 'padding: 0px; height: %@px; -webkit-column-gap: 0px; -webkit-column-width: %@px;');",@(rectView.size.height),@(rectView.size.width)];//padding 内边距属性 ； -webkit-column-gap 列间距 ； -webkit-column-width 列宽
