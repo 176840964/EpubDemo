@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BE4-jA-McA">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ucW-Dk-U21"/>
+                        <viewControllerLayoutGuide type="bottom" id="PHW-W9-Qnt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+        <!--Epub Reader View Controller-->
+        <scene sceneID="s6t-zs-kDC">
+            <objects>
+                <viewController storyboardIdentifier="EpubReaderViewController" id="BE4-jA-McA" customClass="EpubReaderViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="E0F-X8-bsj"/>
+                        <viewControllerLayoutGuide type="bottom" id="tRY-wK-VM4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Fuf-QB-qSR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <connections>
+                        <segue destination="xdE-Z1-VvS" kind="presentation" identifier="presentEpubCatalogViewController" id="3Jk-Qo-7s9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dfQ-5c-agE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="670" y="781"/>
+        </scene>
+        <!--Epub Catalog View Controller-->
+        <scene sceneID="pNP-pS-vZv">
+            <objects>
+                <viewController storyboardIdentifier="EpubCatalogViewController" id="xdE-Z1-VvS" customClass="EpubCatalogViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pnv-tW-mmK"/>
+                        <viewControllerLayoutGuide type="bottom" id="7ea-mm-L0Z"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="iMG-7p-rv0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XZU-Ca-G5f">
+                                <rect key="frame" x="0.0" y="50" width="375" height="617"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="xdE-Z1-VvS" id="nog-D9-fDZ"/>
+                                    <outlet property="delegate" destination="xdE-Z1-VvS" id="qgl-R5-eaZ"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wQd-iT-fdz">
+                                <rect key="frame" x="12" y="20" width="351" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="1iR-Rv-NVN"/>
+                                </constraints>
+                                <state key="normal" title="关闭"/>
+                                <connections>
+                                    <action selector="onTapCloseBtn:" destination="xdE-Z1-VvS" eventType="touchUpInside" id="NYg-yn-RTA"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="XZU-Ca-G5f" secondAttribute="trailing" id="6tP-ug-DRy"/>
+                            <constraint firstItem="XZU-Ca-G5f" firstAttribute="leading" secondItem="iMG-7p-rv0" secondAttribute="leading" id="AuY-Xq-9RK"/>
+                            <constraint firstItem="wQd-iT-fdz" firstAttribute="top" secondItem="pnv-tW-mmK" secondAttribute="bottom" id="CSy-SY-ImE"/>
+                            <constraint firstItem="7ea-mm-L0Z" firstAttribute="top" secondItem="XZU-Ca-G5f" secondAttribute="bottom" id="JIQ-Bo-cxq"/>
+                            <constraint firstItem="wQd-iT-fdz" firstAttribute="leading" secondItem="iMG-7p-rv0" secondAttribute="leading" constant="12" id="Uia-jh-jER"/>
+                            <constraint firstItem="XZU-Ca-G5f" firstAttribute="top" secondItem="wQd-iT-fdz" secondAttribute="bottom" id="cL6-ni-atU"/>
+                            <constraint firstAttribute="trailing" secondItem="wQd-iT-fdz" secondAttribute="trailing" constant="12" id="ujw-6u-JG2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="XZU-Ca-G5f" id="7RI-wX-FEe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v67-Am-PXi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1588" y="776.76161919040487"/>
+        </scene>
+    </scenes>
+</document>

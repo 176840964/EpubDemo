@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ReaderBottomSettingView">
+            <rect key="frame" x="0.0" y="0.0" width="372" height="122"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dba-C3-BfN">
+                    <rect key="frame" x="12" y="8" width="40" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="18" id="6vH-CJ-sBw"/>
+                        <constraint firstAttribute="width" constant="40" id="mkD-rj-h8h"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <state key="normal" title="上一章"/>
+                    <connections>
+                        <action selector="onTapPreChapterBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="7Gz-I8-OgL"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pQM-UZ-05f">
+                    <rect key="frame" x="320" y="8" width="40" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="18" id="LxH-oh-GbJ"/>
+                        <constraint firstAttribute="width" constant="40" id="uwv-LI-hfP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <state key="normal" title="下一章"/>
+                    <connections>
+                        <action selector="onTapNextChapterBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="dVV-JT-0g3"/>
+                    </connections>
+                </button>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="T9D-Gp-wAp">
+                    <rect key="frame" x="58" y="2" width="256" height="31"/>
+                </slider>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xCh-wY-2lv">
+                    <rect key="frame" x="0.0" y="26" width="93" height="96"/>
+                    <state key="normal" title="目录"/>
+                    <connections>
+                        <action selector="onTapCatalogBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="Unw-qo-5sK"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ac1-xd-72K">
+                    <rect key="frame" x="93" y="26" width="93" height="96"/>
+                    <state key="normal" title="字体"/>
+                    <connections>
+                        <action selector="onTapFontBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="cIL-A0-ZKH"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K0b-40-P02">
+                    <rect key="frame" x="186" y="26" width="93" height="96"/>
+                    <state key="normal" title="亮度"/>
+                    <connections>
+                        <action selector="onTapBrightnessBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="yNa-uj-RY9"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Le0-aB-3aC">
+                    <rect key="frame" x="279" y="26" width="93" height="96"/>
+                    <state key="normal" title="翻页"/>
+                    <connections>
+                        <action selector="onTapPagingBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="UvJ-Kq-MJg"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Le0-aB-3aC" firstAttribute="leading" secondItem="K0b-40-P02" secondAttribute="trailing" id="2e2-Iu-C6E"/>
+                <constraint firstAttribute="trailing" secondItem="Le0-aB-3aC" secondAttribute="trailing" id="2hC-c4-Mg0"/>
+                <constraint firstItem="pQM-UZ-05f" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="3vj-s0-jRx"/>
+                <constraint firstItem="ac1-xd-72K" firstAttribute="width" secondItem="xCh-wY-2lv" secondAttribute="width" id="6QT-Eo-q6W"/>
+                <constraint firstItem="pQM-UZ-05f" firstAttribute="leading" secondItem="T9D-Gp-wAp" secondAttribute="trailing" constant="8" id="6X8-Zu-Xb5"/>
+                <constraint firstItem="xCh-wY-2lv" firstAttribute="top" secondItem="Dba-C3-BfN" secondAttribute="bottom" id="BrL-LV-q2l"/>
+                <constraint firstItem="Le0-aB-3aC" firstAttribute="height" secondItem="xCh-wY-2lv" secondAttribute="height" id="DMs-Ig-4kw"/>
+                <constraint firstItem="Le0-aB-3aC" firstAttribute="width" secondItem="xCh-wY-2lv" secondAttribute="width" id="KdB-2S-SES"/>
+                <constraint firstAttribute="bottom" secondItem="xCh-wY-2lv" secondAttribute="bottom" id="QiJ-SE-M3k"/>
+                <constraint firstItem="K0b-40-P02" firstAttribute="height" secondItem="xCh-wY-2lv" secondAttribute="height" id="Ral-ov-fJZ"/>
+                <constraint firstItem="K0b-40-P02" firstAttribute="leading" secondItem="ac1-xd-72K" secondAttribute="trailing" id="SA9-iX-S8d"/>
+                <constraint firstAttribute="bottom" secondItem="Le0-aB-3aC" secondAttribute="bottom" id="UIl-Us-8lS"/>
+                <constraint firstItem="ac1-xd-72K" firstAttribute="height" secondItem="xCh-wY-2lv" secondAttribute="height" id="aTQ-KQ-oq6"/>
+                <constraint firstItem="xCh-wY-2lv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="doP-Y0-IGW"/>
+                <constraint firstAttribute="bottom" secondItem="K0b-40-P02" secondAttribute="bottom" id="gN3-Fz-ihf"/>
+                <constraint firstItem="T9D-Gp-wAp" firstAttribute="centerY" secondItem="Dba-C3-BfN" secondAttribute="centerY" id="hO3-zV-9aX"/>
+                <constraint firstItem="K0b-40-P02" firstAttribute="width" secondItem="xCh-wY-2lv" secondAttribute="width" id="hjI-Fi-sKN"/>
+                <constraint firstItem="T9D-Gp-wAp" firstAttribute="leading" secondItem="Dba-C3-BfN" secondAttribute="trailing" constant="8" id="i2T-T6-Q5f"/>
+                <constraint firstItem="ac1-xd-72K" firstAttribute="leading" secondItem="xCh-wY-2lv" secondAttribute="trailing" id="mZp-zp-961"/>
+                <constraint firstItem="Dba-C3-BfN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="nZ1-zW-ea5"/>
+                <constraint firstItem="Dba-C3-BfN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="s4G-tV-dg3"/>
+                <constraint firstAttribute="bottom" secondItem="ac1-xd-72K" secondAttribute="bottom" id="uUh-9p-Doz"/>
+                <constraint firstAttribute="trailing" secondItem="pQM-UZ-05f" secondAttribute="trailing" constant="12" id="uhk-5c-GcJ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="brightnessBtn" destination="K0b-40-P02" id="rcB-Ii-ZhX"/>
+                <outlet property="catalogBtn" destination="xCh-wY-2lv" id="UU7-QU-FxE"/>
+                <outlet property="fontBtn" destination="ac1-xd-72K" id="3m8-ti-NOe"/>
+                <outlet property="nextChapterBtn" destination="pQM-UZ-05f" id="kPx-T4-Hgg"/>
+                <outlet property="pagingBtn" destination="Le0-aB-3aC" id="pX7-72-Syv"/>
+                <outlet property="preChapterBtn" destination="Dba-C3-BfN" id="NAj-fN-Aoq"/>
+                <outlet property="progressSlider" destination="T9D-Gp-wAp" id="KlR-7d-500"/>
+            </connections>
+            <point key="canvasLocation" x="-200" y="-185.30734632683661"/>
+        </view>
+    </objects>
+</document>
