@@ -50,6 +50,15 @@
 		8289E55B218FE9D200BCFB57 /* ReaderTopSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8289E55A218FE9D200BCFB57 /* ReaderTopSettingView.xib */; };
 		8289E55E21900C5900BCFB57 /* UIView+BaseFrameInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8289E55D21900C5900BCFB57 /* UIView+BaseFrameInfo.m */; };
 		8289E56221904D0D00BCFB57 /* EpubCatalogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8289E56121904D0D00BCFB57 /* EpubCatalogViewController.m */; };
+		8289E5662191335C00BCFB57 /* FontSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8289E5652191335C00BCFB57 /* FontSettingView.m */; };
+		8289E5682191336C00BCFB57 /* FontSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8289E5672191336C00BCFB57 /* FontSettingView.xib */; };
+		8289E56B2191428200BCFB57 /* ReaderSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8289E56A2191428200BCFB57 /* ReaderSettingManager.m */; };
+		8289E57221916C0000BCFB57 /* DFPShaoNvW5.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8289E57121916C0000BCFB57 /* DFPShaoNvW5.ttf */; };
+		8289E57621917FEF00BCFB57 /* ThemeSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8289E57521917FEF00BCFB57 /* ThemeSettingView.m */; };
+		8289E57821917FFD00BCFB57 /* ThemeSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8289E57721917FFD00BCFB57 /* ThemeSettingView.xib */; };
+		8289E57B219187E400BCFB57 /* CustomTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8289E57A219187E400BCFB57 /* CustomTools.m */; };
+		8289E57F21918C7000BCFB57 /* PagingSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8289E57E21918C7000BCFB57 /* PagingSettingView.m */; };
+		8289E58121918C7E00BCFB57 /* PagingSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8289E58021918C7E00BCFB57 /* PagingSettingView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -117,6 +126,20 @@
 		8289E55F21900CD700BCFB57 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		8289E56021904D0D00BCFB57 /* EpubCatalogViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EpubCatalogViewController.h; sourceTree = "<group>"; };
 		8289E56121904D0D00BCFB57 /* EpubCatalogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EpubCatalogViewController.m; sourceTree = "<group>"; };
+		8289E5642191335C00BCFB57 /* FontSettingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FontSettingView.h; sourceTree = "<group>"; };
+		8289E5652191335C00BCFB57 /* FontSettingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FontSettingView.m; sourceTree = "<group>"; };
+		8289E5672191336C00BCFB57 /* FontSettingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FontSettingView.xib; sourceTree = "<group>"; };
+		8289E5692191428200BCFB57 /* ReaderSettingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderSettingManager.h; sourceTree = "<group>"; };
+		8289E56A2191428200BCFB57 /* ReaderSettingManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReaderSettingManager.m; sourceTree = "<group>"; };
+		8289E57121916C0000BCFB57 /* DFPShaoNvW5.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DFPShaoNvW5.ttf; sourceTree = "<group>"; };
+		8289E57421917FEF00BCFB57 /* ThemeSettingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThemeSettingView.h; sourceTree = "<group>"; };
+		8289E57521917FEF00BCFB57 /* ThemeSettingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThemeSettingView.m; sourceTree = "<group>"; };
+		8289E57721917FFD00BCFB57 /* ThemeSettingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThemeSettingView.xib; sourceTree = "<group>"; };
+		8289E579219187E400BCFB57 /* CustomTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTools.h; sourceTree = "<group>"; };
+		8289E57A219187E400BCFB57 /* CustomTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTools.m; sourceTree = "<group>"; };
+		8289E57D21918C7000BCFB57 /* PagingSettingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PagingSettingView.h; sourceTree = "<group>"; };
+		8289E57E21918C7000BCFB57 /* PagingSettingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PagingSettingView.m; sourceTree = "<group>"; };
+		8289E58021918C7E00BCFB57 /* PagingSettingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagingSettingView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +194,7 @@
 				82260F6D217EBA1E00DC064B /* ThirdTool */,
 				82260F69217EB5AB00DC064B /* EpubReader */,
 				82260F66217EB52800DC064B /* EpubRes */,
+				8289E57021916C0000BCFB57 /* FontRes */,
 				82260F50217EB47A00DC064B /* AppDelegate.h */,
 				82260F51217EB47A00DC064B /* AppDelegate.m */,
 				82260F53217EB47A00DC064B /* ViewController.h */,
@@ -196,9 +220,8 @@
 		82260F69217EB5AB00DC064B /* EpubReader */ = {
 			isa = PBXGroup;
 			children = (
+				8289E56C219156CD00BCFB57 /* manager */,
 				82260FBF2180680C00DC064B /* view */,
-				82260FAC217EC25E00DC064B /* EpubParserManager.h */,
-				82260FAD217EC25E00DC064B /* EpubParserManager.m */,
 				82260F6A217EB5EB00DC064B /* EpubReaderViewController.h */,
 				82260F6B217EB5EB00DC064B /* EpubReaderViewController.m */,
 				82260FBA2180245200DC064B /* EpubPageViewController.h */,
@@ -293,6 +316,8 @@
 			children = (
 				82260FB4217ED26A00DC064B /* CustomFileManager.h */,
 				82260FB5217ED26A00DC064B /* CustomFileManager.m */,
+				8289E579219187E400BCFB57 /* CustomTools.h */,
+				8289E57A219187E400BCFB57 /* CustomTools.m */,
 			);
 			path = CustomTool;
 			sourceTree = "<group>";
@@ -310,6 +335,9 @@
 		8289E551218FE94600BCFB57 /* setting */ = {
 			isa = PBXGroup;
 			children = (
+				8289E57C21918C5600BCFB57 /* paging */,
+				8289E57321917FCA00BCFB57 /* theme */,
+				8289E5632191334500BCFB57 /* font */,
 				8289E557218FE9C000BCFB57 /* ReaderTopSettingView.h */,
 				8289E558218FE9C000BCFB57 /* ReaderTopSettingView.m */,
 				8289E55A218FE9D200BCFB57 /* ReaderTopSettingView.xib */,
@@ -318,6 +346,55 @@
 				8289E555218FE99400BCFB57 /* ReaderBottomSettingView.xib */,
 			);
 			path = setting;
+			sourceTree = "<group>";
+		};
+		8289E5632191334500BCFB57 /* font */ = {
+			isa = PBXGroup;
+			children = (
+				8289E5642191335C00BCFB57 /* FontSettingView.h */,
+				8289E5652191335C00BCFB57 /* FontSettingView.m */,
+				8289E5672191336C00BCFB57 /* FontSettingView.xib */,
+			);
+			path = font;
+			sourceTree = "<group>";
+		};
+		8289E56C219156CD00BCFB57 /* manager */ = {
+			isa = PBXGroup;
+			children = (
+				82260FAC217EC25E00DC064B /* EpubParserManager.h */,
+				82260FAD217EC25E00DC064B /* EpubParserManager.m */,
+				8289E5692191428200BCFB57 /* ReaderSettingManager.h */,
+				8289E56A2191428200BCFB57 /* ReaderSettingManager.m */,
+			);
+			path = manager;
+			sourceTree = "<group>";
+		};
+		8289E57021916C0000BCFB57 /* FontRes */ = {
+			isa = PBXGroup;
+			children = (
+				8289E57121916C0000BCFB57 /* DFPShaoNvW5.ttf */,
+			);
+			path = FontRes;
+			sourceTree = "<group>";
+		};
+		8289E57321917FCA00BCFB57 /* theme */ = {
+			isa = PBXGroup;
+			children = (
+				8289E57421917FEF00BCFB57 /* ThemeSettingView.h */,
+				8289E57521917FEF00BCFB57 /* ThemeSettingView.m */,
+				8289E57721917FFD00BCFB57 /* ThemeSettingView.xib */,
+			);
+			path = theme;
+			sourceTree = "<group>";
+		};
+		8289E57C21918C5600BCFB57 /* paging */ = {
+			isa = PBXGroup;
+			children = (
+				8289E57D21918C7000BCFB57 /* PagingSettingView.h */,
+				8289E57E21918C7000BCFB57 /* PagingSettingView.m */,
+				8289E58021918C7E00BCFB57 /* PagingSettingView.xib */,
+			);
+			path = paging;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -377,14 +454,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8289E57221916C0000BCFB57 /* DFPShaoNvW5.ttf in Resources */,
 				8289E55B218FE9D200BCFB57 /* ReaderTopSettingView.xib in Resources */,
 				82260F86217EBA1E00DC064B /* ChangeLogUnzip in Resources */,
 				82260F68217EB52800DC064B /* dmbj.epub in Resources */,
 				82260F5D217EB47B00DC064B /* LaunchScreen.storyboard in Resources */,
+				8289E58121918C7E00BCFB57 /* PagingSettingView.xib in Resources */,
 				82260F5A217EB47B00DC064B /* Assets.xcassets in Resources */,
 				82260F58217EB47A00DC064B /* Main.storyboard in Resources */,
+				8289E57821917FFD00BCFB57 /* ThemeSettingView.xib in Resources */,
 				82260FBE2180245200DC064B /* EpubPageViewController.xib in Resources */,
 				8289E556218FE99400BCFB57 /* ReaderBottomSettingView.xib in Resources */,
+				8289E5682191336C00BCFB57 /* FontSettingView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,15 +480,20 @@
 				82260F55217EB47A00DC064B /* ViewController.m in Sources */,
 				82260F60217EB47B00DC064B /* main.m in Sources */,
 				82260F80217EBA1E00DC064B /* GDataXMLNode.m in Sources */,
+				8289E5662191335C00BCFB57 /* FontSettingView.m in Sources */,
+				8289E57F21918C7000BCFB57 /* PagingSettingView.m in Sources */,
+				8289E57B219187E400BCFB57 /* CustomTools.m in Sources */,
 				8289E56221904D0D00BCFB57 /* EpubCatalogViewController.m in Sources */,
 				82260FC22180683700DC064B /* EpubPageWebView.m in Sources */,
 				8289E554218FE97800BCFB57 /* ReaderBottomSettingView.m in Sources */,
 				82260F85217EBA1E00DC064B /* mztools.c in Sources */,
 				8289E55E21900C5900BCFB57 /* UIView+BaseFrameInfo.m in Sources */,
+				8289E56B2191428200BCFB57 /* ReaderSettingManager.m in Sources */,
 				82260FBD2180245200DC064B /* EpubPageViewController.m in Sources */,
 				82260F82217EBA1E00DC064B /* zip.c in Sources */,
 				82260FAE217EC25E00DC064B /* EpubParserManager.m in Sources */,
 				82260F52217EB47A00DC064B /* AppDelegate.m in Sources */,
+				8289E57621917FEF00BCFB57 /* ThemeSettingView.m in Sources */,
 				82260FB6217ED26A00DC064B /* CustomFileManager.m in Sources */,
 				82260F84217EBA1E00DC064B /* ioapi.c in Sources */,
 				8289E559218FE9C000BCFB57 /* ReaderTopSettingView.m in Sources */,

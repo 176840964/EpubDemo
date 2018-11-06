@@ -15,7 +15,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *timeStatusLab;
 @property (nonatomic, weak) IBOutlet EpubPageWebView *pageWebview;
 
-@property (nonatomic, assign) NSInteger currentTextSize;//文字大小
 @property (nonatomic, copy) NSString *jsContent;
 @end
 
@@ -26,7 +25,6 @@
     if (self) {
         self.chapterIndex = -1;
         self.pageIndex = -1;
-        self.currentTextSize = 18;
     }
     
     return self;
@@ -44,6 +42,10 @@
         }
     }
     
+    NSString *themeBodyColor = [self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"body"];
+    UIColor *bgColor = [CustomTools UIColorFromRGBString:themeBodyColor];
+    self.view.backgroundColor = bgColor;
+    
 //    self.pageWebview.hidden = YES;
     
     if (self.chapterIndex > -1) {
@@ -51,7 +53,7 @@
         NSString *filePath = [NSString stringWithFormat:@"%@%@", self.parserManager.contentFilesFolder, self.chapterFileNameStr];
         
         if (self.jsContent.length < 1) {
-            self.jsContent = [self.class jsContentWithViewRect:self.pageWebview.frame];
+            self.jsContent = [self jsContentWithViewRect:self.pageWebview.frame];
         }
         
         [self.pageWebview loadHTMLWithPath:filePath jsContent:self.jsContent];
@@ -96,16 +98,17 @@
     [self.pageWebview stringByEvaluatingJavaScriptFromString:goTo];
     
     //背景主题
-//    NSString *themeBodyColor=[self.epubVC.arrTheme[self.epubVC.themeIndex] objectForKey:@"bodycolor"];
-//    NSString *bodycolor= [NSString stringWithFormat:@"addCSSRule('body', 'background-color: %@;')",themeBodyColor];
-//    [self.pageWebview stringByEvaluatingJavaScriptFromString:bodycolor];
-//
-//    NSString *themeTextColor=[self.epubVC.arrTheme[self.epubVC.themeIndex] objectForKey:@"textcolor"];
-//    NSString *textcolor1=[NSString stringWithFormat:@"addCSSRule('h1', 'color: %@;')",themeTextColor];
-//    [self.pageWebview stringByEvaluatingJavaScriptFromString:textcolor1];
-//
-//    NSString *textcolor2=[NSString stringWithFormat:@"addCSSRule('p', 'color: %@;')",themeTextColor];
-//    [self.pageWebview stringByEvaluatingJavaScriptFromString:textcolor2];
+    NSString *themeBodyColor = [self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"body"];
+    NSString *bodycolor = [NSString stringWithFormat:@"addCSSRule('body', 'background-color: %@;')",themeBodyColor];
+    [self.pageWebview stringByEvaluatingJavaScriptFromString:bodycolor];
+
+    NSString *themeTextColor=[self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"text"];
+    NSString *textcolor1=[NSString stringWithFormat:@"addCSSRule('h1', 'color: %@;')",themeTextColor];
+    [self.pageWebview stringByEvaluatingJavaScriptFromString:textcolor1];
+    NSString *textcolor2=[NSString stringWithFormat:@"addCSSRule('h2', 'color: %@;')",themeTextColor];
+    [self.pageWebview stringByEvaluatingJavaScriptFromString:textcolor2];
+    NSString *textcolor3=[NSString stringWithFormat:@"addCSSRule('p', 'color: %@;')",themeTextColor];
+    [self.pageWebview stringByEvaluatingJavaScriptFromString:textcolor3];
     
     //刷新显示文本
     [self reloadSubviews];
@@ -173,8 +176,8 @@
     
     NSString *insertRule1 = [NSString stringWithFormat:@"addCSSRule('html', 'padding: 0px; height: %fpx; -webkit-column-gap: 0px; -webkit-column-width: %fpx;')", theWebView.frame.size.height, theWebView.frame.size.width];
     
-    NSString *setTextSizeRule = [NSString stringWithFormat:@"addCSSRule('body', ' font-size:%@px;')", @(self.currentTextSize)];
-    NSString *setTextSizeRule2 = [NSString stringWithFormat:@"addCSSRule('p', ' font-size:%@px;')", @(self.currentTextSize)];
+    NSString *setTextSizeRule = [NSString stringWithFormat:@"addCSSRule('body', ' font-size:%@px;')", @(self.parserManager.settingManager.currentTextSize)];
+    NSString *setTextSizeRule2 = [NSString stringWithFormat:@"addCSSRule('p', ' font-size:%@px;')", @(self.parserManager.settingManager.currentTextSize)];
     
     [theWebView stringByEvaluatingJavaScriptFromString:insertRule1];
     [theWebView stringByEvaluatingJavaScriptFromString:setTextSizeRule];
@@ -219,15 +222,14 @@
     }
 }
 
-#pragma mark - ++++
-+ (NSString*)jsContentWithViewRect:(CGRect)rectView {
+#pragma mark -
+- (NSString*)jsContentWithViewRect:(CGRect)rectView {
     
-    NSString *js0=@"";
-#warning 有关字体和字号的临时注释
-//    if (self.fontSelectIndex == 1) {
-//        NSString *path1=[self fileFindFullPathWithFileName:@"DFPShaoNvW5.ttf" InDirectory:nil];
-//        js0=[self jsFontStyle:path1];
-//    }
+    NSString *js0 = @"";
+    if (self.parserManager.settingManager.currentFontIndex == 1) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"DFPShaoNvW5.ttf" ofType:nil];
+        js0 = [self jsFontStyle:path];
+    }
     
     NSString *js1=@"<style>img {  max-width:100% ; }</style>\n";
     
@@ -263,17 +265,21 @@
     
     
     [arrJs addObject:@"addCSSRule('p', 'text-align: justify;');"];
-    [arrJs addObject:@"addCSSRule('p.content', 'line-height: 2;');"];//字的行间距 默认是1 或者 使用px方式 默认值是20px
+    
+    NSString *addcss_spacing = [NSString stringWithFormat:@"addCSSRule('p', 'line-height: %@;');", @(self.parserManager.settingManager.currentSpacingIndex)];
+    [arrJs addObject:addcss_spacing];//字的行间距 默认是1 或者 使用px方式 默认值是20px
+//    [arrJs addObject:@"addCSSRule('p.content', 'line-height: 2;');"];
+    
     [arrJs addObject:@"addCSSRule('highlight', 'background-color: ffffff;');"];//高亮背景色
 //    {
-//        NSString *css1 = [NSString stringWithFormat:@"addCSSRule('body', ' font-size:%@px;');", @(self.currentTextSize)];
-//        [arrJs addObject:css1];
+//        NSString *addcss_fontSize = [NSString stringWithFormat:@"addCSSRule('body', ' font-size:%@px;');", @(self.parserManager.settingManager.currentTextSize)];
+//        [arrJs addObject:addcss_fontSize];
 //    }
-//    {
-//        NSString *fontName= [[self.arrFont objectAtIndex:self.fontSelectIndex] objectForKey:@"fontName"];
-//        NSString *css1=[NSString stringWithFormat:@"addCSSRule('body', ' font-family:\"%@\";');",fontName];
-//        [arrJs addObject:css1];
-//    }
+    {
+        NSString *fontName = [[self.parserManager.settingManager.fontArr objectAtIndex:self.parserManager.settingManager.currentFontIndex] objectForKey:@"fontName"];
+        NSString *addcss_font = [NSString stringWithFormat:@"addCSSRule('body', ' font-family:\"%@\";');", fontName];
+        [arrJs addObject:addcss_font];
+    }
     
     [arrJs addObject:@"addCSSRule('body', ' margin:0 0 0 0;');"];//上，右，下，左 顺时针
     {
@@ -287,6 +293,18 @@
     
     NSString *jsRet=[NSString stringWithFormat:@"%@\n%@\n%@",js0,js1,jsJoin];
     return jsRet;
+}
+
+-(NSString*)jsFontStyle:(NSString*)fontFilePath {
+    //注意 fontName, DFPShaoNvW5.ttf 如果改为 aa.ttf, 那么fontname也应该是“DFPShaoNvW5”，
+    //fontName是系统认的名称,非文件名， 我这里把文件名改了，参考本文件的 customFontWithPath 方法得到真正的fontName
+    
+    NSString *fontFile = [fontFilePath lastPathComponent];
+    NSString *fontName = [fontFile stringByDeletingPathExtension];
+    //NSString *jsFont=@"<style type=\"text/css\"> @font-face{ font-family: 'DFPShaoNvW5'; src: url('DFPShaoNvW5-GB.ttf'); } </style> ";
+    NSString *jsFontStyle = [NSString stringWithFormat:@"<style type=\"text/css\"> @font-face{ font-family: '%@'; src: url('%@'); } </style>", fontName, fontFile];
+    
+    return jsFontStyle;
 }
 
 @end

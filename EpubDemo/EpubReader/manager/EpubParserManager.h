@@ -7,10 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ReaderSettingManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EpubParserManager : NSObject
+
+@property (strong, nonatomic) ReaderSettingManager *settingManager;
 
 @property (strong, nonatomic) NSArray *catelogInfoArr;
 

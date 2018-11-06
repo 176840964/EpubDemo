@@ -48,12 +48,21 @@
 }
 
 - (IBAction)onTapFontBtn:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(readerBottomSettingViewTapFontBtn:)]) {
+        [self.delegate readerBottomSettingViewTapFontBtn:self];
+    }
 }
 
 - (IBAction)onTapBrightnessBtn:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(readerBottomSettingViewTapBrightnessBtn:)]) {
+        [self.delegate readerBottomSettingViewTapBrightnessBtn:self];
+    }
 }
 
 - (IBAction)onTapPagingBtn:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(readerBottomSettingViewTapPagingBtn:)]) {
+        [self.delegate readerBottomSettingViewTapPagingBtn:self];
+    }
 }
 
 @end

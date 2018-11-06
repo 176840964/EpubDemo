@@ -31,6 +31,7 @@
 {
     self = [super init];
     if (self) {
+        self.settingManager = [[ReaderSettingManager alloc] init];
         self.chapterPageInfoDic = [NSMutableDictionary dictionary];
         self.metadataDic = [NSMutableDictionary dictionary];
         self.spineItemrefArr = [NSMutableArray array];

@@ -12,12 +12,18 @@
 #import "ReaderTopSettingView.h"
 #import "ReaderBottomSettingView.h"
 #import "EpubCatalogViewController.h"
+#import "FontSettingView.h"
+#import "ThemeSettingView.h"
+#import "PagingSettingView.h"
 
-@interface EpubReaderViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource, EpubPageViewControllerDelegate, ReaderBottomSettingViewDelegate, EpubCatalogViewControllerDelegate>
-@property (strong, nonatomic) EpubParserManager *parserMangeger;
+@interface EpubReaderViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource, EpubPageViewControllerDelegate, ReaderBottomSettingViewDelegate, EpubCatalogViewControllerDelegate, FontSettingViewDelegate, ThemeSettingViewDelegate, PagingSettingViewDelegate>
+@property (strong, nonatomic) EpubParserManager *parserManager;
 @property (strong, nonatomic) UIPageViewController * pageViewController;
 @property (strong, nonatomic) ReaderTopSettingView *topView;
 @property (strong, nonatomic) ReaderBottomSettingView *bottomView;
+@property (strong, nonatomic) FontSettingView *fontSettingView;
+@property (strong, nonatomic) ThemeSettingView *themeSettingView;
+@property (strong, nonatomic) PagingSettingView *pagingSettingView;
 
 @property (assign, nonatomic) NSInteger chapterIndex;
 @property (assign, nonatomic) NSInteger pageIndex;
@@ -31,22 +37,34 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    
     NSString *fileFullPath = [[NSBundle mainBundle] pathForResource:@"dmbj" ofType:@"epub"];
-    self.parserMangeger = [[EpubParserManager alloc] init];
-    [self.parserMangeger parserEpubSourceByFullPath:fileFullPath];
+    self.parserManager = [[EpubParserManager alloc] init];
+    [self.parserManager parserEpubSourceByFullPath:fileFullPath];
+    
+    [self addSettingObserver];
     
     [self showPageViewController];
     [self createSettingViews];
     
-    if (CGAffineTransformIsIdentity(self.topView.transform)) {
+    if (self.parserManager.settingManager.settingStatus == ReaderShowSettingStatusOfTopAndBottom) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self showOrHiddenSettingViews];
+            self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfNone;
         });
     }
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
+
+- (void)dealloc
+{
+    [self removeSettingObserver];
+}
+
 - (BOOL)prefersStatusBarHidden {
-    return self.isShowStatusBar;
+    return !self.isShowStatusBar;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
@@ -60,7 +78,7 @@
     if ([segue.identifier isEqualToString:@"presentEpubCatalogViewController"]) {
         EpubCatalogViewController *catelogVc = segue.destinationViewController;
         catelogVc.delegate = self;
-        catelogVc.parserManager = self.parserMangeger;
+        catelogVc.parserManager = self.parserManager;
     }
 }
 
@@ -69,7 +87,7 @@
     if (!self.topView) {
         self.topView = [[NSBundle mainBundle] loadNibNamed:@"ReaderTopSettingView" owner:nil options:nil].lastObject;
         self.topView.backgroundColor = [UIColor redColor];
-        self.topView.frame = CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 70);
+        self.topView.frame = CGRectMake(0, -70, CGRectGetWidth([UIScreen mainScreen].bounds), 70);
         [self.view addSubview:self.topView];
     }
     
@@ -77,23 +95,23 @@
         self.bottomView = [[NSBundle mainBundle] loadNibNamed:@"ReaderBottomSettingView" owner:nil options:nil].lastObject;
         self.bottomView.delegate = self;
         self.bottomView.backgroundColor = [UIColor redColor];
-        self.bottomView.frame = CGRectMake(0, CGRectGetHeight([UIScreen mainScreen].bounds) - 70, CGRectGetWidth([UIScreen mainScreen].bounds), 70);
+        self.bottomView.frame = CGRectMake(0, CGRectGetHeight([UIScreen mainScreen].bounds), CGRectGetWidth([UIScreen mainScreen].bounds), 70);
         [self.view addSubview:self.bottomView];
     }
+    
+    self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfTopAndBottom;
 }
 
-- (void)showOrHiddenSettingViews {
+- (void)showOrHiddenSettingViews:(BOOL)isShow {
     [UIView animateWithDuration:0.25 animations:^{
-        if (self.isShowStatusBar) {
+        if (isShow) {
+            self.topView.transform = CGAffineTransformMakeTranslation(0, self.topView.height);
+            self.bottomView.transform = CGAffineTransformMakeTranslation(0, -self.bottomView.height);
+        } else {
             self.topView.transform = CGAffineTransformIdentity;
             self.bottomView.transform = CGAffineTransformIdentity;
-//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
-        } else {
-            self.topView.transform = CGAffineTransformMakeTranslation(0, -self.topView.height);
-            self.bottomView.transform = CGAffineTransformMakeTranslation(0, self.bottomView.height);
-//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
         }
-        self.isShowStatusBar = !self.isShowStatusBar;
+        self.isShowStatusBar = isShow;
         [self setNeedsStatusBarAppearanceUpdate];
         
     }];
@@ -116,26 +134,26 @@
         self.pageViewController = nil;
     }
     
-    NSMutableDictionary * options=[NSMutableDictionary dictionary];
-    NSNumber *spineLocationValue= [NSNumber numberWithInteger:UIPageViewControllerSpineLocationMin];
+    NSMutableDictionary * options = [NSMutableDictionary dictionary];
+    NSNumber *spineLocationValue = [NSNumber numberWithInteger:UIPageViewControllerSpineLocationMin];
     [options setObject:spineLocationValue forKey:UIPageViewControllerOptionSpineLocationKey];
     
-    self.pageViewController = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:options];
+    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:self.parserManager.settingManager.pagingType navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:options];
     
     self.pageViewController.view.frame = self.view.bounds;
     self.pageViewController.view.backgroundColor=[UIColor clearColor];
-//    {
-//        NSString *themeBodyColor=[self.arrTheme[self.themeIndex] objectForKey:@"bodycolor"];
-//        UIColor *bgColor1=[self UIColorFromRGBString:themeBodyColor];
-//        self.view.backgroundColor=bgColor1;
-//        _pageViewController.view.backgroundColor=bgColor1;
-//    }
+    {
+        NSString *themeBodyColor = [self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"body"];
+        UIColor *bgColor = [CustomTools UIColorFromRGBString:themeBodyColor];
+        self.view.backgroundColor = bgColor;
+        self.pageViewController.view.backgroundColor = bgColor;
+    }
     
     NSArray * viewControllers = nil;
     {
         EpubPageViewController *firstVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
         firstVC.delegate = self;
-        firstVC.parserManager = self.parserMangeger;
+        firstVC.parserManager = self.parserManager;
         firstVC.chapterIndex = self.chapterIndex;
         firstVC.pageIndex = self.pageIndex;
         
@@ -153,18 +171,103 @@
     
 }
 
+#pragma mark - KVO
+- (void)addSettingObserver {
+    [self.parserManager.settingManager addObserver:self forKeyPath:@"settingStatus" options:NSKeyValueObservingOptionNew context:nil];
+    [self.parserManager.settingManager addObserver:self forKeyPath:@"currentTextSize" options:NSKeyValueObservingOptionNew context:nil];
+    [self.parserManager.settingManager addObserver:self forKeyPath:@"currentFontIndex" options:NSKeyValueObservingOptionNew context:nil];
+    [self.parserManager.settingManager addObserver:self forKeyPath:@"currentSpacingIndex" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)removeSettingObserver {
+    [self.parserManager.settingManager removeObserver:self forKeyPath:@"settingStatus"];
+    [self.parserManager.settingManager removeObserver:self forKeyPath:@"currentTextSize"];
+    [self.parserManager.settingManager removeObserver:self forKeyPath:@"currentFontIndex"];
+    [self.parserManager.settingManager removeObserver:self forKeyPath:@"currentSpacingIndex"];
+}
+
+- (void)observeValueForKeyPath:(nullable NSString *)keyPath ofObject:(nullable id)object change:(nullable NSDictionary<NSKeyValueChangeKey, id> *)change context:(nullable void *)context {
+    if ([keyPath isEqualToString:@"settingStatus"]) {
+        ReaderSettingManager *manager = (ReaderSettingManager*)object;
+        switch (manager.settingStatus) {
+            case ReaderShowSettingStatusOfTopAndBottom:{
+                [self showOrHiddenSettingViews:YES];
+            }
+                break;
+                
+            case ReaderShowSettingStatusOfFont: {
+                [self showOrHiddenSettingViews:NO];
+                [self.fontSettingView showingFontSettingView:YES];
+            }
+                break;
+                
+            case ReaderShowSettingStatusOfTheme: {
+                [self showOrHiddenSettingViews:NO];
+                [self.themeSettingView showingThemeSettingView:YES];
+            }
+                break;
+                
+            case ReaderShowSettingStatusOfPaging: {
+                [self showOrHiddenSettingViews:NO];
+                [self.pagingSettingView showingPagingSettingView:YES];
+            }
+                break;
+            default: {
+                [self.themeSettingView showingThemeSettingView:NO];
+                [self.fontSettingView showingFontSettingView:NO];
+                [self.pagingSettingView showingPagingSettingView:NO];
+                [self showOrHiddenSettingViews:NO];
+            }
+                break;
+        }
+    } else if ([keyPath isEqualToString:@"currentTextSize"] || [keyPath isEqualToString:@"currentFontIndex"] || [keyPath isEqualToString:@"currentSpacingIndex"]) {
+        [self.parserManager.chapterPageInfoDic removeAllObjects];
+    }
+}
+
+#pragma mark - Lazy load
+- (FontSettingView*)fontSettingView {
+    if (_fontSettingView == nil) {
+        _fontSettingView = [[NSBundle mainBundle] loadNibNamed:@"FontSettingView" owner:nil options:nil].lastObject;
+        _fontSettingView.delegate = self;
+        [self.view addSubview:_fontSettingView];
+    }
+    
+    return _fontSettingView;
+}
+
+- (ThemeSettingView*)themeSettingView {
+    if (_themeSettingView == nil) {
+        _themeSettingView = [[NSBundle mainBundle] loadNibNamed:@"ThemeSettingView" owner:nil options:nil].lastObject;
+        _themeSettingView.delegate = self;
+        [self.view addSubview:_themeSettingView];
+    }
+    
+    return _themeSettingView;
+}
+
+- (PagingSettingView*)pagingSettingView {
+    if (_pagingSettingView == nil) {
+        _pagingSettingView = [[NSBundle mainBundle] loadNibNamed:@"PagingSettingView" owner:nil options:nil].lastObject;
+        _pagingSettingView.delegate = self;
+        [self.view addSubview:_pagingSettingView];
+    }
+    
+    return _pagingSettingView;
+}
+
 #pragma mark - UIPageViewControllerDataSource
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     EpubPageViewController *pageCurVC = (EpubPageViewController*)viewController;
     NSInteger pageRefIndex = pageCurVC.chapterIndex;
     NSInteger offYIndexInPage = pageCurVC.pageIndex;
     
-    NSInteger countOfPage = [[self.parserMangeger.chapterPageInfoDic objectForKey:pageCurVC.chapterFileNameStr] integerValue];
-    if (countOfPage<1) {
+    NSInteger countOfPage = [[self.parserManager.chapterPageInfoDic objectForKey:pageCurVC.chapterFileNameStr] integerValue];
+    if (countOfPage < 1) {
         return nil;
     }
     
-    if (pageRefIndex == 0 ) {
+    if (pageRefIndex == 0 && offYIndexInPage == 0) {
         //第一页 或 没有找到
         return nil;
     }
@@ -173,7 +276,7 @@
         //同一页内 上滚动翻页
         EpubPageViewController *pageVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
         pageVC.delegate = self;
-        pageVC.parserManager = self.parserMangeger;
+        pageVC.parserManager = self.parserManager;
         pageVC.chapterIndex = pageRefIndex;
         pageVC.pageIndex = offYIndexInPage - 1;
         
@@ -184,7 +287,7 @@
         //上一页
         EpubPageViewController *pageVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
         pageVC.delegate = self;
-        pageVC.parserManager = self.parserMangeger;
+        pageVC.parserManager = self.parserManager;
         pageVC.chapterIndex = pageRefIndex-1;
         pageVC.isPreChapter = YES;
         
@@ -203,7 +306,7 @@
     NSInteger pageRefIndex = pageCurVC.chapterIndex;
     NSInteger offYIndexInPage = pageCurVC.pageIndex;
     
-    NSInteger countOfPage = [[self.parserMangeger.chapterPageInfoDic objectForKey:pageCurVC.chapterFileNameStr] integerValue];
+    NSInteger countOfPage = [[self.parserManager.chapterPageInfoDic objectForKey:pageCurVC.chapterFileNameStr] integerValue];
     if (countOfPage < 1) {
         return nil;
     }
@@ -217,7 +320,7 @@
         //同一页内 下滚动翻页
         EpubPageViewController *pageVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
         pageVC.delegate = self;
-        pageVC.parserManager = self.parserMangeger;
+        pageVC.parserManager = self.parserManager;
         pageVC.chapterIndex = pageRefIndex;
         pageVC.pageIndex = offYIndexInPage + 1;
         
@@ -226,12 +329,12 @@
         return pageVC;
     } else {
         //下一页
-        NSInteger pageCount = [self.parserMangeger.catelogInfoArr count];
+        NSInteger pageCount = [self.parserManager.catelogInfoArr count];
         
         if (pageRefIndex < pageCount - 1) {
             EpubPageViewController *pageVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
             pageVC.delegate = self;
-            pageVC.parserManager = self.parserMangeger;
+            pageVC.parserManager = self.parserManager;
             pageVC.chapterIndex = pageRefIndex+1;
             
             self.chapterIndex = pageRefIndex+1;
@@ -246,7 +349,28 @@
 
 #pragma mark - EpubPageViewControllerDelegate
 - (void)singleTapEpubPageViewController:(EpubPageViewController*)epubPageViewController {
-    [self showOrHiddenSettingViews];
+    switch (self.parserManager.settingManager.settingStatus) {
+        case ReaderShowSettingStatusOfTopAndBottom: {
+            self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfNone;
+        }
+            break;
+        case ReaderShowSettingStatusOfFont: {
+            self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfNone;
+        }
+            break;
+        case ReaderShowSettingStatusOfTheme: {
+            self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfNone;
+        }
+            break;
+        case ReaderShowSettingStatusOfPaging: {
+            self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfNone;
+        }
+            break;
+        default:{
+            self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfTopAndBottom;
+        }
+            break;
+    }
 }
 
 - (void)doubleTapEpubPageViewController:(EpubPageViewController*)epubPageViewController {
@@ -271,7 +395,7 @@
 }
 
 - (void)readerBottomSettingViewTapNextChapter:(ReaderBottomSettingView*)readerBottomSettingView{
-    NSInteger chapterCount = [self.parserMangeger.catelogInfoArr count];
+    NSInteger chapterCount = [self.parserManager.catelogInfoArr count];
     NSInteger index = self.chapterIndex;
     if (index + 1 > chapterCount - 1) {
         return;
@@ -285,11 +409,74 @@
     [self performSegueWithIdentifier:@"presentEpubCatalogViewController" sender:self];
 }
 
+- (void)readerBottomSettingViewTapFontBtn:(ReaderBottomSettingView*)readerBottomSettingView {
+    self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfFont;
+}
+
+- (void)readerBottomSettingViewTapBrightnessBtn:(ReaderBottomSettingView*)readerBottomSettingView {
+    self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfTheme;
+}
+
+- (void)readerBottomSettingViewTapPagingBtn:(ReaderBottomSettingView*)readerBottomSettingView {
+    self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfPaging;
+}
+
 #pragma mark - EpubCatalogViewControllerDelegate
 - (void)epubCatalogViewController:(EpubCatalogViewController*)epubCatalogViewController jumpToChapterWithChapterIndex:(NSInteger)chapterIndex {
-    if (chapterIndex >= 0 && chapterIndex < self.parserMangeger.catelogInfoArr.count) {
+    if (chapterIndex >= 0 && chapterIndex < self.parserManager.catelogInfoArr.count) {
         self.chapterIndex = chapterIndex;
         self.pageIndex = 0;
+        [self showPageViewController];
+    }
+}
+
+#pragma mark - FontSettingViewDelegate
+- (void)fontSettingViewReduceSize:(FontSettingView*)fontSettingView {
+    NSInteger size = self.parserManager.settingManager.currentTextSize - TextSizeStep;
+    size = MIN(TextSizeMax, size);
+    size = MAX(TextSizeMin, size);
+    if (size != self.parserManager.settingManager.currentFontIndex) {
+        self.parserManager.settingManager.currentTextSize = size;
+        [self showPageViewController];
+    }
+}
+
+- (void)fontSettingViewIncreaseSize:(FontSettingView*)fontSettingView {
+    NSInteger size = self.parserManager.settingManager.currentTextSize + TextSizeStep;
+    size = MIN(TextSizeMax, size);
+    size = MAX(TextSizeMin, size);
+    if (size != self.parserManager.settingManager.currentFontIndex) {
+        self.parserManager.settingManager.currentTextSize = size;
+        [self showPageViewController];
+    }
+}
+
+- (void)fontSettingView:(FontSettingView*)fontSettingView selectFontWithIndex:(NSInteger)index {
+    if (self.parserManager.settingManager.currentFontIndex != index - 1) {
+        self.parserManager.settingManager.currentFontIndex = index - 1;
+        [self showPageViewController];
+    }
+}
+
+- (void)fontSettingView:(FontSettingView *)fontSettingView selectSpacingWithIndex:(NSInteger)index {
+    if (self.parserManager.settingManager.currentSpacingIndex != index + 1) {
+        self.parserManager.settingManager.currentSpacingIndex = index + 1;
+        [self showPageViewController];
+    }
+}
+
+#pragma mark - ThemeSettingViewDelegate
+- (void)themeSettingView:(ThemeSettingView*)themeSettingView themeBtnTag:(NSInteger)tag {
+    if (self.parserManager.settingManager.currentThemeIndex != tag) {
+        self.parserManager.settingManager.currentThemeIndex = tag;
+        [self showPageViewController];
+    }
+}
+
+#pragma mark - PagingSettingViewDelegate
+- (void)pagingSettingView:(PagingSettingView*)pagingSettingView btnTag:(NSInteger)tag {
+    if (self.parserManager.settingManager.pagingType != tag) {
+        self.parserManager.settingManager.pagingType = tag;
         [self showPageViewController];
     }
 }

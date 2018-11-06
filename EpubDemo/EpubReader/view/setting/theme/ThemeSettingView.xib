@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ThemeSettingView">
+            <rect key="frame" x="0.0" y="0.0" width="321" height="63"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l0f-RN-bkm">
+                    <rect key="frame" x="12" y="0.0" width="91" height="63"/>
+                    <state key="normal" title="标准"/>
+                    <connections>
+                        <action selector="onTapThemeBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="oGg-Jb-tCe"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ggn-1h-wvI">
+                    <rect key="frame" x="115" y="0.0" width="91" height="63"/>
+                    <state key="normal" title="夜间"/>
+                    <connections>
+                        <action selector="onTapThemeBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="bMJ-20-DQX"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tKG-4G-Y09">
+                    <rect key="frame" x="218" y="0.0" width="91" height="63"/>
+                    <state key="normal" title="护眼"/>
+                    <connections>
+                        <action selector="onTapThemeBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="pqe-fm-sgG"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="tKG-4G-Y09" secondAttribute="trailing" constant="12" id="5RX-ZY-nGb"/>
+                <constraint firstItem="tKG-4G-Y09" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="AKC-Bj-raN"/>
+                <constraint firstAttribute="bottom" secondItem="l0f-RN-bkm" secondAttribute="bottom" id="Atq-OH-tQ5"/>
+                <constraint firstItem="ggn-1h-wvI" firstAttribute="width" secondItem="l0f-RN-bkm" secondAttribute="width" id="CyU-G2-aSA"/>
+                <constraint firstItem="ggn-1h-wvI" firstAttribute="leading" secondItem="l0f-RN-bkm" secondAttribute="trailing" constant="12" id="Fqf-Co-0p3"/>
+                <constraint firstItem="tKG-4G-Y09" firstAttribute="width" secondItem="l0f-RN-bkm" secondAttribute="width" id="GUq-QU-lfn"/>
+                <constraint firstItem="tKG-4G-Y09" firstAttribute="leading" secondItem="ggn-1h-wvI" secondAttribute="trailing" constant="12" id="Qob-JP-yET"/>
+                <constraint firstAttribute="bottom" secondItem="ggn-1h-wvI" secondAttribute="bottom" id="S5u-wv-ScT"/>
+                <constraint firstItem="l0f-RN-bkm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Und-co-CSR"/>
+                <constraint firstItem="l0f-RN-bkm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="VnD-v0-FdC"/>
+                <constraint firstItem="ggn-1h-wvI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eqK-TO-h8r"/>
+                <constraint firstAttribute="bottom" secondItem="tKG-4G-Y09" secondAttribute="bottom" id="nIG-S7-wxm"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="themeBtn1" destination="l0f-RN-bkm" id="Trh-if-rrp"/>
+                <outlet property="themeBtn2" destination="ggn-1h-wvI" id="LC5-Fs-4k4"/>
+                <outlet property="themeBtn3" destination="tKG-4G-Y09" id="Inn-aS-PaS"/>
+            </connections>
+            <point key="canvasLocation" x="-117.59999999999999" y="-121.88905547226388"/>
+        </view>
+    </objects>
+</document>

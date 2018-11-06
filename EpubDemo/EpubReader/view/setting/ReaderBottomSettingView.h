@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)readerBottomSettingViewTapPreChapter:(ReaderBottomSettingView*)readerBottomSettingView;
 - (void)readerBottomSettingViewTapNextChapter:(ReaderBottomSettingView*)readerBottomSettingView;
 - (void)readerBottomSettingViewTapCatalogBtn:(ReaderBottomSettingView*)readerBottomSettingView;
+- (void)readerBottomSettingViewTapFontBtn:(ReaderBottomSettingView*)readerBottomSettingView;
+- (void)readerBottomSettingViewTapBrightnessBtn:(ReaderBottomSettingView*)readerBottomSettingView;
+- (void)readerBottomSettingViewTapPagingBtn:(ReaderBottomSettingView*)readerBottomSettingView;
 
 @end
 
