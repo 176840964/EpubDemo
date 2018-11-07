@@ -23,5 +23,14 @@
 }
 */
 
+#pragma mark - IBAction
+- (IBAction)onTapBackBtn:(id)sender {
+}
+
+- (IBAction)onTapSearchBtn:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(readerTopSettingViewTapSearchHandle:)]) {
+        [self.delegate readerTopSettingViewTapSearchHandle:self];
+    }
+}
 
 @end

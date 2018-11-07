@@ -34,30 +34,47 @@
     
     if (strFileContent && [jsContent length]>1)
     {
-        NSRange head1=[strFileContent rangeOfString:@"<head>" options:NSCaseInsensitiveSearch];
-        NSRange head2=[strFileContent rangeOfString:@"</head>" options:NSCaseInsensitiveSearch];
+        NSRange head1 = [strFileContent rangeOfString:@"<head>" options:NSCaseInsensitiveSearch];
+        NSRange head2 = [strFileContent rangeOfString:@"</head>" options:NSCaseInsensitiveSearch];
         
-        if (head1.location != NSNotFound && head2.location !=NSNotFound && head2.location>head1.location )
+        if (head1.location != NSNotFound && head2.location !=NSNotFound && head2.location > head1.location )
         {
-            NSRange rangeHead=head1;
-            rangeHead.length=head2.location - head1.location;
-            NSString *strHead=[strFileContent substringWithRange:rangeHead];
+            NSRange rangeHead = head1;
+            rangeHead.length = head2.location - head1.location;
+            NSString *strHead = [strFileContent substringWithRange:rangeHead];
             
-            NSString *str1=[strFileContent substringToIndex:head1.location];
-            NSString *str3=[strFileContent substringFromIndex:head2.location];
+            NSString *str1 = [strFileContent substringToIndex:head1.location];
+            NSString *str3 = [strFileContent substringFromIndex:head2.location];
             
-            NSString *strHeadEdit=[NSString stringWithFormat:@"%@\n%@",strHead,jsContent];
+            NSString *strHeadEdit = [NSString stringWithFormat:@"%@\n%@", strHead, jsContent];
             
-            strHTML=[NSString stringWithFormat:@"%@%@%@",str1,strHeadEdit,str3];
+            strHTML = [NSString stringWithFormat:@"%@%@%@",str1,strHeadEdit,str3];
             
         }
     }
-    else if ( strFileContent )
+    else if (strFileContent)
     {
         strHTML=[NSString stringWithFormat:@"%@",strFileContent];
     }
     
     return strHTML;
+}
+
+//高亮
+- (NSInteger)highlightAllOccurencesOfString:(NSString*)str {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"SearchWebView" ofType:@"js"];
+    NSString *jsCode = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    [self stringByEvaluatingJavaScriptFromString:jsCode];
+    
+    NSString *startSearch = [NSString stringWithFormat:@"MyApp_HighlightAllOccurencesOfString('%@');",str];
+    [self stringByEvaluatingJavaScriptFromString:startSearch];
+    
+    //    NSLog(@"%@", [self stringByEvaluatingJavaScriptFromString:@"console"]);
+    return [[self stringByEvaluatingJavaScriptFromString:@"MyApp_SearchResultCount;"] intValue];
+}
+
+- (void)removeAllHighlights {
+    [self stringByEvaluatingJavaScriptFromString:@"MyApp_RemoveAllHighlights()"];
 }
 
 @end

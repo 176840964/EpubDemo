@@ -15,7 +15,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *timeStatusLab;
 @property (nonatomic, weak) IBOutlet EpubPageWebView *pageWebview;
 
-@property (nonatomic, copy) NSString *jsContent;
 @end
 
 @implementation EpubPageViewController
@@ -52,11 +51,12 @@
         self.chapterFileNameStr = [self.parserManager chapterFileNameByIndex:self.chapterIndex];
         NSString *filePath = [NSString stringWithFormat:@"%@%@", self.parserManager.contentFilesFolder, self.chapterFileNameStr];
         
-        if (self.jsContent.length < 1) {
-            self.jsContent = [self jsContentWithViewRect:self.pageWebview.frame];
+        if (self.parserManager.jsContent.length < 1) {
+            self.parserManager.jsContent = [self jsContentWithViewSize:self.pageWebview.frame.size];
+            self.parserManager.settingManager.containerSize = self.pageWebview.frame.size;
         }
         
-        [self.pageWebview loadHTMLWithPath:filePath jsContent:self.jsContent];
+        [self.pageWebview loadHTMLWithPath:filePath jsContent:self.parserManager.jsContent];
     }
     
     [self createGestureRecognizer];
@@ -101,7 +101,7 @@
 }
 
 - (void)reloadSubviews {
-    self.titleLab.text = self.parserManager.curChapterNameStr;
+    self.titleLab.text = [self.parserManager chapterNameByIndex:self.chapterIndex];
     
     NSNumber *countOfPage = [self.parserManager.chapterPageInfoDic objectForKey:self.chapterFileNameStr];
     self.pageStatusLab.text = [NSString stringWithFormat:@"%@ / %@" , @(self.pageIndex + 1), countOfPage];
@@ -187,17 +187,16 @@
     NSLog(@"self.pageIndex:%lo", self.pageIndex);
     
     if (self.pageIndex > -1 && self.pageIndex < countOfPage && countOfPage > 0) {
-//        //查找
-//        if (self.epubVC.pageIsShowSearchResultText && [self.epubVC.currentSearchText length]>0) {
-//            [(EPUBPageWebView*)theWebView highlightAllOccurencesOfString:self.epubVC.currentSearchText];
-//        }
+        if (self.parserManager.settingManager.currentSearchText.length > 0) {
+            [(EpubPageWebView*)theWebView highlightAllOccurencesOfString:self.parserManager.settingManager.currentSearchText];
+        }
 
         [self gotoIndexOfPageWithIndex:self.pageIndex andCountOfPage:countOfPage];
     }
 }
 
 #pragma mark -
-- (NSString*)jsContentWithViewRect:(CGRect)rectView {
+- (NSString*)jsContentWithViewSize:(CGSize)viewSize {
     
     NSString *js0 = @"";
     if (self.parserManager.settingManager.currentFontIndex == 1) {
@@ -249,7 +248,9 @@
         [arrJs addObject:addcss_spacing];//字的行间距 默认是1 或者 使用px方式 默认值是20px
     }
     {//搜索高亮
-        [arrJs addObject:@"addCSSRule('highlight', 'background-color: ffffff;');"];//高亮背景色
+        NSString *themeHighlightColor = [self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"highlight"];
+        NSString *addcss_hightlight = [NSString stringWithFormat:@"addCSSRule('highlight', 'background-color: %@;');", themeHighlightColor];
+        [arrJs addObject:addcss_hightlight];
     }
     {//字号
         NSString *addcss_fontSize = [NSString stringWithFormat:@"addCSSRule('body', ' font-size:%@px;');", @(self.parserManager.settingManager.currentTextSize)];
@@ -275,7 +276,7 @@
     }
     [arrJs addObject:@"addCSSRule('body', ' margin:0 0 0 0;');"];//上，右，下，左 顺时针
     {
-        NSString *css1=[NSString stringWithFormat:@"addCSSRule('html', 'padding: 0px; height: %@px; -webkit-column-gap: 0px; -webkit-column-width: %@px;');",@(rectView.size.height),@(rectView.size.width)];//padding 内边距属性 ； -webkit-column-gap 列间距 ； -webkit-column-width 列宽
+        NSString *css1=[NSString stringWithFormat:@"addCSSRule('html', 'padding: 0px; height: %@px; -webkit-column-gap: 0px; -webkit-column-width: %@px;');",@(viewSize.height),@(viewSize.width)];//padding 内边距属性 ； -webkit-column-gap 列间距 ； -webkit-column-width 列宽
         [arrJs addObject:css1];
     }
     

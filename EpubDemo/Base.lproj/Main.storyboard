@@ -41,6 +41,7 @@
                     </view>
                     <connections>
                         <segue destination="xdE-Z1-VvS" kind="presentation" identifier="presentEpubCatalogViewController" id="3Jk-Qo-7s9"/>
+                        <segue destination="alk-ra-UMk" kind="presentation" identifier="presentEpubSearchViewController" id="zFP-2A-lHH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dfQ-5c-agE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -96,6 +97,82 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v67-Am-PXi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1588" y="776.76161919040487"/>
+        </scene>
+        <!--Epub Search View Controller-->
+        <scene sceneID="gbG-6b-UgK">
+            <objects>
+                <viewController storyboardIdentifier="EpubSearchViewController" id="alk-ra-UMk" customClass="EpubSearchViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BkN-KD-HXK"/>
+                        <viewControllerLayoutGuide type="bottom" id="3wz-bi-py9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vdj-Rd-NxQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="搜索" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ofq-YS-z6U">
+                                <rect key="frame" x="170" y="20" width="35" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="u6g-tv-piF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6LC-ec-FCa">
+                                <rect key="frame" x="12" y="15.5" width="44" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="PTt-Xh-1Rd"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="l7w-7q-cDA"/>
+                                </constraints>
+                                <state key="normal" title="back"/>
+                                <connections>
+                                    <action selector="onTapBackBtn:" destination="alk-ra-UMk" eventType="touchUpInside" id="d0b-Sk-00j"/>
+                                </connections>
+                            </button>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="oRR-6e-tll">
+                                <rect key="frame" x="0.0" y="41" width="375" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="Ya5-6f-eaC"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="alk-ra-UMk" id="q0O-vY-5i3"/>
+                                </connections>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wAF-OD-ppd">
+                                <rect key="frame" x="0.0" y="97" width="375" height="570"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="alk-ra-UMk" id="KCd-CI-wpA"/>
+                                    <outlet property="delegate" destination="alk-ra-UMk" id="eib-if-Ywq"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Ofq-YS-z6U" firstAttribute="centerX" secondItem="vdj-Rd-NxQ" secondAttribute="centerX" id="2E5-wh-2T5"/>
+                            <constraint firstItem="wAF-OD-ppd" firstAttribute="leading" secondItem="vdj-Rd-NxQ" secondAttribute="leading" id="3Xx-3k-BnV"/>
+                            <constraint firstAttribute="trailing" secondItem="wAF-OD-ppd" secondAttribute="trailing" id="6hZ-B8-0nn"/>
+                            <constraint firstItem="3wz-bi-py9" firstAttribute="top" secondItem="wAF-OD-ppd" secondAttribute="bottom" id="A7S-3K-QsN"/>
+                            <constraint firstItem="Ofq-YS-z6U" firstAttribute="top" secondItem="BkN-KD-HXK" secondAttribute="bottom" id="Da3-DA-Xs3"/>
+                            <constraint firstAttribute="trailing" secondItem="oRR-6e-tll" secondAttribute="trailing" id="Ev5-Gf-Rcr"/>
+                            <constraint firstItem="oRR-6e-tll" firstAttribute="leading" secondItem="vdj-Rd-NxQ" secondAttribute="leading" id="OF7-Ty-9HB"/>
+                            <constraint firstItem="oRR-6e-tll" firstAttribute="top" secondItem="Ofq-YS-z6U" secondAttribute="bottom" id="Zfd-p1-lzY"/>
+                            <constraint firstItem="6LC-ec-FCa" firstAttribute="leading" secondItem="vdj-Rd-NxQ" secondAttribute="leading" constant="12" id="jgI-Ml-QYb"/>
+                            <constraint firstItem="Ofq-YS-z6U" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6LC-ec-FCa" secondAttribute="trailing" constant="8" symbolic="YES" id="qf2-ZE-Ug5"/>
+                            <constraint firstItem="wAF-OD-ppd" firstAttribute="top" secondItem="oRR-6e-tll" secondAttribute="bottom" id="tqO-4t-Jgl"/>
+                            <constraint firstItem="6LC-ec-FCa" firstAttribute="centerY" secondItem="Ofq-YS-z6U" secondAttribute="centerY" id="xpQ-mH-PIs"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="searchBar" destination="oRR-6e-tll" id="Oev-eO-98o"/>
+                        <outlet property="tableView" destination="wAF-OD-ppd" id="gHT-i8-V6m"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6xE-zv-cbv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1587" y="1465"/>
         </scene>
     </scenes>
 </document>

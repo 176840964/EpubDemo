@@ -12,17 +12,15 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EpubParserManager : NSObject
-
 @property (strong, nonatomic) ReaderSettingManager *settingManager;
-
 @property (strong, nonatomic) NSArray *catelogInfoArr;
-
 @property (strong, nonatomic) NSMutableDictionary *chapterPageInfoDic;
 @property (copy, nonatomic) NSString *contentFilesFolder;
-@property (copy, nonatomic) NSString *curChapterNameStr;
+@property (copy, nonatomic) NSString *jsContent;
 
 - (void)parserEpubSourceByFullPath:(NSString *)fileFullPath;
 - (NSString*)chapterFileNameByIndex:(NSInteger)index;
+- (NSString*)chapterNameByIndex:(NSInteger)index;
 @end
 
 NS_ASSUME_NONNULL_END

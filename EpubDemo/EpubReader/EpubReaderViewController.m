@@ -15,8 +15,9 @@
 #import "FontSettingView.h"
 #import "ThemeSettingView.h"
 #import "PagingSettingView.h"
+#import "EpubSearchViewController.h"
 
-@interface EpubReaderViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource, EpubPageViewControllerDelegate, ReaderBottomSettingViewDelegate, EpubCatalogViewControllerDelegate, FontSettingViewDelegate, ThemeSettingViewDelegate, PagingSettingViewDelegate>
+@interface EpubReaderViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource, EpubPageViewControllerDelegate, ReaderTopSettingViewDelegate, ReaderBottomSettingViewDelegate, EpubCatalogViewControllerDelegate, FontSettingViewDelegate, ThemeSettingViewDelegate, PagingSettingViewDelegate, EpubSearchViewControllerDelegate>
 @property (strong, nonatomic) EpubParserManager *parserManager;
 @property (strong, nonatomic) UIPageViewController * pageViewController;
 @property (strong, nonatomic) ReaderTopSettingView *topView;
@@ -79,6 +80,10 @@
         EpubCatalogViewController *catelogVc = segue.destinationViewController;
         catelogVc.delegate = self;
         catelogVc.parserManager = self.parserManager;
+    }else if ([segue.identifier isEqualToString:@"presentEpubSearchViewController"]) {
+        EpubSearchViewController *searchVc = segue.destinationViewController;
+        searchVc.delegate = self;
+        searchVc.parserManager = self.parserManager;
     }
 }
 
@@ -86,6 +91,7 @@
 - (void)createSettingViews {
     if (!self.topView) {
         self.topView = [[NSBundle mainBundle] loadNibNamed:@"ReaderTopSettingView" owner:nil options:nil].lastObject;
+        self.topView.delegate = self;
         self.topView.backgroundColor = [UIColor redColor];
         self.topView.frame = CGRectMake(0, -70, CGRectGetWidth([UIScreen mainScreen].bounds), 70);
         [self.view addSubview:self.topView];
@@ -177,6 +183,7 @@
     [self.parserManager.settingManager addObserver:self forKeyPath:@"currentTextSize" options:NSKeyValueObservingOptionNew context:nil];
     [self.parserManager.settingManager addObserver:self forKeyPath:@"currentFontIndex" options:NSKeyValueObservingOptionNew context:nil];
     [self.parserManager.settingManager addObserver:self forKeyPath:@"currentSpacingIndex" options:NSKeyValueObservingOptionNew context:nil];
+    [self.parserManager.settingManager addObserver:self forKeyPath:@"currentThemeIndex" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)removeSettingObserver {
@@ -184,6 +191,7 @@
     [self.parserManager.settingManager removeObserver:self forKeyPath:@"currentTextSize"];
     [self.parserManager.settingManager removeObserver:self forKeyPath:@"currentFontIndex"];
     [self.parserManager.settingManager removeObserver:self forKeyPath:@"currentSpacingIndex"];
+    [self.parserManager.settingManager removeObserver:self forKeyPath:@"currentThemeIndex"];
 }
 
 - (void)observeValueForKeyPath:(nullable NSString *)keyPath ofObject:(nullable id)object change:(nullable NSDictionary<NSKeyValueChangeKey, id> *)change context:(nullable void *)context {
@@ -222,6 +230,9 @@
         }
     } else if ([keyPath isEqualToString:@"currentTextSize"] || [keyPath isEqualToString:@"currentFontIndex"] || [keyPath isEqualToString:@"currentSpacingIndex"]) {
         [self.parserManager.chapterPageInfoDic removeAllObjects];
+        self.parserManager.jsContent = @"";
+    } else if ([keyPath isEqualToString:@"currentThemeIndex"]) {
+        self.parserManager.jsContent = @"";
     }
 }
 
@@ -382,6 +393,11 @@
     self.bottomView.progressSlider.value = curPage.floatValue;
 }
 
+#pragma mark - ReaderTopSettingViewDelegate
+- (void)readerTopSettingViewTapSearchHandle:(ReaderTopSettingView*)readerTopSettingView {
+    [self performSegueWithIdentifier:@"presentEpubSearchViewController" sender:self];
+}
+
 #pragma mark - ReaderBottomSettingViewDelegate
 - (void)readerBottomSettingViewTapPreChapter:(ReaderBottomSettingView*)readerBottomSettingView {
     NSInteger index = self.chapterIndex;
@@ -479,6 +495,20 @@
         self.parserManager.settingManager.pagingType = tag;
         [self showPageViewController];
     }
+}
+
+#pragma mark - EpubSearchViewControllerDelegate
+- (void)epubSearchViewController:(EpubSearchViewController*)epubSearchViewController chapterIndex:(NSInteger)chapterIndex pageIndex:(NSInteger)pageIndex {
+    self.chapterIndex = chapterIndex;
+    self.pageIndex = pageIndex;
+    
+    if (_pageViewController) {
+        [_pageViewController.view removeFromSuperview];
+        [_pageViewController removeFromParentViewController];
+        self.pageViewController=nil;
+    }
+    
+    [self showPageViewController];
 }
 
 @end

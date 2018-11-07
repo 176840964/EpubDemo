@@ -22,6 +22,9 @@
                         <constraint firstAttribute="width" constant="46" id="gND-Sg-LXo"/>
                     </constraints>
                     <state key="normal" title="Back"/>
+                    <connections>
+                        <action selector="onTapBackBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="3A8-9t-ouI"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zZf-FM-F3G">
                     <rect key="frame" x="379" y="21" width="48" height="50"/>
@@ -30,6 +33,9 @@
                         <constraint firstAttribute="height" constant="50" id="V5L-Lz-38H"/>
                     </constraints>
                     <state key="normal" title="Search"/>
+                    <connections>
+                        <action selector="onTapSearchBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="sMN-Jg-8gd"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

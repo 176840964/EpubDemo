@@ -38,6 +38,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) NSInteger pagingType;
 
+@property (copy, nonatomic) NSString *currentSearchText;
+@property (strong, nonatomic) NSMutableArray *searchResultArr;
+
+@property (assign, nonatomic) CGSize containerSize;
+
 @end
 
 NS_ASSUME_NONNULL_END

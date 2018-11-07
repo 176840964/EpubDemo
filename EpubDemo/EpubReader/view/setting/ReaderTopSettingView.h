@@ -8,9 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@class ReaderTopSettingView;
+
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol ReaderTopSettingViewDelegate <NSObject>
+
+- (void)readerTopSettingViewTapSearchHandle:(ReaderTopSettingView*)readerTopSettingView;
+
+@end
+
 @interface ReaderTopSettingView : UIView
+
+@property (weak, nonatomic) id<ReaderTopSettingViewDelegate> delegate;
 
 @end
 

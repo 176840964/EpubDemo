@@ -59,6 +59,8 @@
 		8289E57B219187E400BCFB57 /* CustomTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8289E57A219187E400BCFB57 /* CustomTools.m */; };
 		8289E57F21918C7000BCFB57 /* PagingSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8289E57E21918C7000BCFB57 /* PagingSettingView.m */; };
 		8289E58121918C7E00BCFB57 /* PagingSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8289E58021918C7E00BCFB57 /* PagingSettingView.xib */; };
+		8289E584219290DF00BCFB57 /* EpubSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8289E583219290DF00BCFB57 /* EpubSearchViewController.m */; };
+		8289E5872192BEA100BCFB57 /* SearchWebView.js in Resources */ = {isa = PBXBuildFile; fileRef = 8289E5862192BEA100BCFB57 /* SearchWebView.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -140,6 +142,9 @@
 		8289E57D21918C7000BCFB57 /* PagingSettingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PagingSettingView.h; sourceTree = "<group>"; };
 		8289E57E21918C7000BCFB57 /* PagingSettingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PagingSettingView.m; sourceTree = "<group>"; };
 		8289E58021918C7E00BCFB57 /* PagingSettingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagingSettingView.xib; sourceTree = "<group>"; };
+		8289E582219290DF00BCFB57 /* EpubSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EpubSearchViewController.h; sourceTree = "<group>"; };
+		8289E583219290DF00BCFB57 /* EpubSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EpubSearchViewController.m; sourceTree = "<group>"; };
+		8289E5862192BEA100BCFB57 /* SearchWebView.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = SearchWebView.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +200,7 @@
 				82260F69217EB5AB00DC064B /* EpubReader */,
 				82260F66217EB52800DC064B /* EpubRes */,
 				8289E57021916C0000BCFB57 /* FontRes */,
+				8289E5852192BEA100BCFB57 /* JSRes */,
 				82260F50217EB47A00DC064B /* AppDelegate.h */,
 				82260F51217EB47A00DC064B /* AppDelegate.m */,
 				82260F53217EB47A00DC064B /* ViewController.h */,
@@ -229,6 +235,8 @@
 				82260FBC2180245200DC064B /* EpubPageViewController.xib */,
 				8289E56021904D0D00BCFB57 /* EpubCatalogViewController.h */,
 				8289E56121904D0D00BCFB57 /* EpubCatalogViewController.m */,
+				8289E582219290DF00BCFB57 /* EpubSearchViewController.h */,
+				8289E583219290DF00BCFB57 /* EpubSearchViewController.m */,
 			);
 			path = EpubReader;
 			sourceTree = "<group>";
@@ -397,6 +405,14 @@
 			path = paging;
 			sourceTree = "<group>";
 		};
+		8289E5852192BEA100BCFB57 /* JSRes */ = {
+			isa = PBXGroup;
+			children = (
+				8289E5862192BEA100BCFB57 /* SearchWebView.js */,
+			);
+			path = JSRes;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -465,6 +481,7 @@
 				8289E57821917FFD00BCFB57 /* ThemeSettingView.xib in Resources */,
 				82260FBE2180245200DC064B /* EpubPageViewController.xib in Resources */,
 				8289E556218FE99400BCFB57 /* ReaderBottomSettingView.xib in Resources */,
+				8289E5872192BEA100BCFB57 /* SearchWebView.js in Resources */,
 				8289E5682191336C00BCFB57 /* FontSettingView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -487,6 +504,7 @@
 				82260FC22180683700DC064B /* EpubPageWebView.m in Sources */,
 				8289E554218FE97800BCFB57 /* ReaderBottomSettingView.m in Sources */,
 				82260F85217EBA1E00DC064B /* mztools.c in Sources */,
+				8289E584219290DF00BCFB57 /* EpubSearchViewController.m in Sources */,
 				8289E55E21900C5900BCFB57 /* UIView+BaseFrameInfo.m in Sources */,
 				8289E56B2191428200BCFB57 /* ReaderSettingManager.m in Sources */,
 				82260FBD2180245200DC064B /* EpubPageViewController.m in Sources */,

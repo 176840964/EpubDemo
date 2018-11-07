@@ -73,8 +73,16 @@
 - (NSString*)chapterFileNameByIndex:(NSInteger)index {
     if (index >= 0 && index < self.catelogInfoArr.count) {
         NSDictionary *dic = [self.catelogInfoArr objectAtIndex:index];
-        self.curChapterNameStr = [dic objectForKey:@"chapterName"];
         return [dic objectForKey:@"chapterFile"];
+    }
+    
+    return nil;
+}
+
+- (NSString*)chapterNameByIndex:(NSInteger)index {
+    if (index >= 0 && index < self.catelogInfoArr.count) {
+        NSDictionary *dic = [self.catelogInfoArr objectAtIndex:index];
+        return [dic objectForKey:@"chapterName"];
     }
     
     return nil;
