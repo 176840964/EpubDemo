@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EpubReaderViewController : UIViewController
-
+@property (copy, nonatomic) NSString *bookNameStr;
 @end
 
 NS_ASSUME_NONNULL_END

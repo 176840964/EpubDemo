@@ -244,8 +244,13 @@
     
     [arrJs addObject:@"addCSSRule('p', 'text-align: justify;');"];
     {//行间距
-        NSString *addcss_spacing = [NSString stringWithFormat:@"addCSSRule('p', 'line-height: %@;');", @(self.parserManager.settingManager.currentSpacingIndex)];
-        [arrJs addObject:addcss_spacing];//字的行间距 默认是1 或者 使用px方式 默认值是20px
+        // <p>
+        NSString *addcss_spacing1 = [NSString stringWithFormat:@"addCSSRule('p', 'line-height: %@;');", @(self.parserManager.settingManager.currentSpacingIndex)];
+        [arrJs addObject:addcss_spacing1];//字的行间距 默认是1 或者 使用px方式 默认值是20px
+        
+        // <p class="content">
+        NSString *addcss_spacing2 = [NSString stringWithFormat:@"addCSSRule('p.content', 'line-height: %@;');", @(self.parserManager.settingManager.currentSpacingIndex)];
+        [arrJs addObject:addcss_spacing2];//字的行间距 默认是1 或者 使用px方式 默认值是20px
     }
     {//搜索高亮
         NSString *themeHighlightColor = [self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"highlight"];

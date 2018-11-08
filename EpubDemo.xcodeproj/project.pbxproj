@@ -7,13 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		821A545F21940DAA00D8AA33 /* 饮食业成本核算.epub in Resources */ = {isa = PBXBuildFile; fileRef = 821A545821940DA900D8AA33 /* 饮食业成本核算.epub */; };
+		821A546021940DAA00D8AA33 /* 为人处世曾国藩.epub in Resources */ = {isa = PBXBuildFile; fileRef = 821A545921940DAA00D8AA33 /* 为人处世曾国藩.epub */; };
+		821A546121940DAA00D8AA33 /* 保持共产党员先进性教育学习文件导读.epub in Resources */ = {isa = PBXBuildFile; fileRef = 821A545A21940DAA00D8AA33 /* 保持共产党员先进性教育学习文件导读.epub */; };
+		821A546221940DAA00D8AA33 /* “八个必须坚持”学习读本.epub in Resources */ = {isa = PBXBuildFile; fileRef = 821A545B21940DAA00D8AA33 /* “八个必须坚持”学习读本.epub */; };
+		821A546321940DAA00D8AA33 /* 《实践论》《矛盾论》导读.epub in Resources */ = {isa = PBXBuildFile; fileRef = 821A545C21940DAA00D8AA33 /* 《实践论》《矛盾论》导读.epub */; };
+		821A546421940DAA00D8AA33 /* 云林堂饮食制度集.epub in Resources */ = {isa = PBXBuildFile; fileRef = 821A545D21940DAA00D8AA33 /* 云林堂饮食制度集.epub */; };
+		821A546521940DAA00D8AA33 /* 盗墓笔记.epub in Resources */ = {isa = PBXBuildFile; fileRef = 821A545E21940DAA00D8AA33 /* 盗墓笔记.epub */; };
 		82260F52217EB47A00DC064B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 82260F51217EB47A00DC064B /* AppDelegate.m */; };
 		82260F55217EB47A00DC064B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82260F54217EB47A00DC064B /* ViewController.m */; };
 		82260F58217EB47A00DC064B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82260F56217EB47A00DC064B /* Main.storyboard */; };
 		82260F5A217EB47B00DC064B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82260F59217EB47B00DC064B /* Assets.xcassets */; };
 		82260F5D217EB47B00DC064B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82260F5B217EB47B00DC064B /* LaunchScreen.storyboard */; };
 		82260F60217EB47B00DC064B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 82260F5F217EB47B00DC064B /* main.m */; };
-		82260F68217EB52800DC064B /* dmbj.epub in Resources */ = {isa = PBXBuildFile; fileRef = 82260F67217EB52800DC064B /* dmbj.epub */; };
 		82260F6C217EB5EB00DC064B /* EpubReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82260F6B217EB5EB00DC064B /* EpubReaderViewController.m */; };
 		82260F80217EBA1E00DC064B /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 82260F70217EBA1E00DC064B /* GDataXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		82260F81217EBA1E00DC064B /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 82260F74217EBA1E00DC064B /* unzip.c */; };
@@ -64,6 +70,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		821A545821940DA900D8AA33 /* 饮食业成本核算.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "饮食业成本核算.epub"; sourceTree = "<group>"; };
+		821A545921940DAA00D8AA33 /* 为人处世曾国藩.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "为人处世曾国藩.epub"; sourceTree = "<group>"; };
+		821A545A21940DAA00D8AA33 /* 保持共产党员先进性教育学习文件导读.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "保持共产党员先进性教育学习文件导读.epub"; sourceTree = "<group>"; };
+		821A545B21940DAA00D8AA33 /* “八个必须坚持”学习读本.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "“八个必须坚持”学习读本.epub"; sourceTree = "<group>"; };
+		821A545C21940DAA00D8AA33 /* 《实践论》《矛盾论》导读.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "《实践论》《矛盾论》导读.epub"; sourceTree = "<group>"; };
+		821A545D21940DAA00D8AA33 /* 云林堂饮食制度集.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "云林堂饮食制度集.epub"; sourceTree = "<group>"; };
+		821A545E21940DAA00D8AA33 /* 盗墓笔记.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "盗墓笔记.epub"; sourceTree = "<group>"; };
 		82260F4D217EB47A00DC064B /* EpubDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EpubDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82260F50217EB47A00DC064B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		82260F51217EB47A00DC064B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -74,7 +87,6 @@
 		82260F5C217EB47B00DC064B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		82260F5E217EB47B00DC064B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		82260F5F217EB47B00DC064B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		82260F67217EB52800DC064B /* dmbj.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = dmbj.epub; sourceTree = "<group>"; };
 		82260F6A217EB5EB00DC064B /* EpubReaderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EpubReaderViewController.h; sourceTree = "<group>"; };
 		82260F6B217EB5EB00DC064B /* EpubReaderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EpubReaderViewController.m; sourceTree = "<group>"; };
 		82260F6F217EBA1E00DC064B /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
@@ -218,7 +230,13 @@
 		82260F66217EB52800DC064B /* EpubRes */ = {
 			isa = PBXGroup;
 			children = (
-				82260F67217EB52800DC064B /* dmbj.epub */,
+				821A545B21940DAA00D8AA33 /* “八个必须坚持”学习读本.epub */,
+				821A545C21940DAA00D8AA33 /* 《实践论》《矛盾论》导读.epub */,
+				821A545D21940DAA00D8AA33 /* 云林堂饮食制度集.epub */,
+				821A545A21940DAA00D8AA33 /* 保持共产党员先进性教育学习文件导读.epub */,
+				821A545E21940DAA00D8AA33 /* 盗墓笔记.epub */,
+				821A545921940DAA00D8AA33 /* 为人处世曾国藩.epub */,
+				821A545821940DA900D8AA33 /* 饮食业成本核算.epub */,
 			);
 			path = EpubRes;
 			sourceTree = "<group>";
@@ -471,18 +489,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				8289E57221916C0000BCFB57 /* DFPShaoNvW5.ttf in Resources */,
+				821A546221940DAA00D8AA33 /* “八个必须坚持”学习读本.epub in Resources */,
 				8289E55B218FE9D200BCFB57 /* ReaderTopSettingView.xib in Resources */,
+				821A546521940DAA00D8AA33 /* 盗墓笔记.epub in Resources */,
+				821A546021940DAA00D8AA33 /* 为人处世曾国藩.epub in Resources */,
 				82260F86217EBA1E00DC064B /* ChangeLogUnzip in Resources */,
-				82260F68217EB52800DC064B /* dmbj.epub in Resources */,
 				82260F5D217EB47B00DC064B /* LaunchScreen.storyboard in Resources */,
 				8289E58121918C7E00BCFB57 /* PagingSettingView.xib in Resources */,
+				821A545F21940DAA00D8AA33 /* 饮食业成本核算.epub in Resources */,
 				82260F5A217EB47B00DC064B /* Assets.xcassets in Resources */,
 				82260F58217EB47A00DC064B /* Main.storyboard in Resources */,
 				8289E57821917FFD00BCFB57 /* ThemeSettingView.xib in Resources */,
 				82260FBE2180245200DC064B /* EpubPageViewController.xib in Resources */,
 				8289E556218FE99400BCFB57 /* ReaderBottomSettingView.xib in Resources */,
+				821A546321940DAA00D8AA33 /* 《实践论》《矛盾论》导读.epub in Resources */,
 				8289E5872192BEA100BCFB57 /* SearchWebView.js in Resources */,
 				8289E5682191336C00BCFB57 /* FontSettingView.xib in Resources */,
+				821A546121940DAA00D8AA33 /* 保持共产党员先进性教育学习文件导读.epub in Resources */,
+				821A546421940DAA00D8AA33 /* 云林堂饮食制度集.epub in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

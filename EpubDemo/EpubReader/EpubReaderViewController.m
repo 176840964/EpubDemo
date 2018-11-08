@@ -39,7 +39,7 @@
     // Do any additional setup after loading the view.
     
     
-    NSString *fileFullPath = [[NSBundle mainBundle] pathForResource:@"dmbj" ofType:@"epub"];
+    NSString *fileFullPath = [[NSBundle mainBundle] pathForResource:self.bookNameStr ofType:@"epub"];
     self.parserManager = [[EpubParserManager alloc] init];
     [self.parserManager parserEpubSourceByFullPath:fileFullPath];
     
@@ -394,6 +394,10 @@
 }
 
 #pragma mark - ReaderTopSettingViewDelegate
+- (void)readerTopSettingViewTapBackHandle:(ReaderTopSettingView*)readerTopSettingView {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)readerTopSettingViewTapSearchHandle:(ReaderTopSettingView*)readerTopSettingView {
     [self performSegueWithIdentifier:@"presentEpubSearchViewController" sender:self];
 }

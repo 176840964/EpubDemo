@@ -18,7 +18,7 @@ function MyApp_HighlightAllOccurencesOfStringForElement(element,keyword) {
                 
                 var span = document.createElement("highlight");
                 span.className = "MyAppHighlight";
-                var text = document.createTextNode(value.substr(idx,keyword.length));
+                var text = document.createTextNode(value.substr(idx, keyword.length));
                 span.appendChild(text);
                 
                 var rightText = document.createTextNode(value.substr(idx+keyword.length));

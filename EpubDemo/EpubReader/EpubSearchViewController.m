@@ -151,9 +151,6 @@
     if (isFind) {
         NSString *foundHits = [webView stringByEvaluatingJavaScriptFromString:@"results"];
         
-        //NSLog(@"find=%@ ,chapterIndex=%d,( w:%f h:%f ),foundHits = %@", self.searchText,chapterIndex,webView.bounds.size.width, webView.bounds.size.height,foundHits);
-        
-        
         NSMutableArray* objects = [[NSMutableArray alloc] init];
         
         NSArray* stringObjects = [foundHits componentsSeparatedByString:@";"];

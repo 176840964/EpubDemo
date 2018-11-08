@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BE4-jA-McA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="9vf-fQ-mM6">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -20,11 +20,33 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nC2-lr-nCI">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="nDE-PP-Zv4"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Qgf-ws-Tg5"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="nC2-lr-nCI" firstAttribute="top" secondItem="ucW-Dk-U21" secondAttribute="bottom" id="CWN-qG-tTp"/>
+                            <constraint firstItem="nC2-lr-nCI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Ui8-Q2-hy2"/>
+                            <constraint firstItem="PHW-W9-Qnt" firstAttribute="top" secondItem="nC2-lr-nCI" secondAttribute="bottom" id="cwv-z5-q5b"/>
+                            <constraint firstAttribute="trailing" secondItem="nC2-lr-nCI" secondAttribute="trailing" id="i47-Mw-iPX"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="EbT-nx-BdX"/>
+                    <connections>
+                        <outlet property="tableView" destination="nC2-lr-nCI" id="DG7-mD-kZ1"/>
+                        <segue destination="BE4-jA-McA" kind="show" identifier="showEpubReaderViewController" id="F3T-m7-vpy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="721" y="864"/>
         </scene>
         <!--Epub Reader View Controller-->
         <scene sceneID="s6t-zs-kDC">
@@ -46,7 +68,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dfQ-5c-agE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="670" y="781"/>
+            <point key="canvasLocation" x="1608.8" y="780.35982008995506"/>
         </scene>
         <!--Epub Catalog View Controller-->
         <scene sceneID="pNP-pS-vZv">
@@ -96,7 +118,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v67-Am-PXi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1588" y="776.76161919040487"/>
+            <point key="canvasLocation" x="2527.1999999999998" y="776.76161919040487"/>
         </scene>
         <!--Epub Search View Controller-->
         <scene sceneID="gbG-6b-UgK">
@@ -172,7 +194,24 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6xE-zv-cbv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1587" y="1465"/>
+            <point key="canvasLocation" x="1598" y="1618"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="T3J-QU-Xfi">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="9vf-fQ-mM6" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4pl-uP-Pe9">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="UNs-mH-Tez"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hfZ-Wq-oAR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="721" y="134"/>
         </scene>
     </scenes>
 </document>

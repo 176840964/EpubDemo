@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ReaderTopSettingViewDelegate <NSObject>
 
+- (void)readerTopSettingViewTapBackHandle:(ReaderTopSettingView*)readerTopSettingView;
 - (void)readerTopSettingViewTapSearchHandle:(ReaderTopSettingView*)readerTopSettingView;
 
 @end
