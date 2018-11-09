@@ -130,8 +130,19 @@
 }
 
 - (void)onSingleTapGestureRecognizer:(UITapGestureRecognizer *)tapGesture {
-    if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewController:)]) {
-        [self.delegate singleTapEpubPageViewController:self];
+    CGPoint point = [tapGesture locationInView:tapGesture.view];
+    if (point.x < CGRectGetWidth([UIScreen mainScreen].bounds) / 3.0) {
+        if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowPrePage:)]) {
+            [self.delegate singleTapEpubPageViewControllerToShowPrePage:self];
+        }
+    } else if (point.x > CGRectGetWidth([UIScreen mainScreen].bounds) / 3.0 * 2.0) {
+        if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowNextPage:)]) {
+            [self.delegate singleTapEpubPageViewControllerToShowNextPage:self];
+        }
+    } else {
+        if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowSetting:)]) {
+            [self.delegate singleTapEpubPageViewControllerToShowSetting:self];
+        }
     }
 }
 
@@ -164,14 +175,14 @@
         NSInteger totalWidth = [[theWebView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollWidth"] integerValue];
         NSLog(@"totalWidth  %lo",totalWidth);
         
-        NSInteger theWebSizeWidth=theWebView.bounds.size.width;
+        NSInteger theWebSizeWidth = theWebView.bounds.size.width;
         NSInteger countOfPage = (NSInteger)((float)totalWidth / theWebSizeWidth);
         
         [self.parserManager.chapterPageInfoDic setObject:@(countOfPage) forKey:self.chapterFileNameStr];
     }
     
     NSInteger countOfPage = [[self.parserManager.chapterPageInfoDic objectForKey:self.chapterFileNameStr] integerValue];
-    NSLog(@"countOfPage:%lo", countOfPage);
+    NSLog(@"countOfPage:%ld", (long)countOfPage);
     
     //滚动索引
     if (self.isPreChapter) {
@@ -180,7 +191,7 @@
     if (self.pageIndex >= countOfPage) {
         self.pageIndex = countOfPage - 1;
     }
-    if (self.pageIndex <0) {
+    if (self.pageIndex < 0) {
         self.pageIndex = 0;
     }
     

@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)readerBottomSettingViewTapFontBtn:(ReaderBottomSettingView*)readerBottomSettingView;
 - (void)readerBottomSettingViewTapBrightnessBtn:(ReaderBottomSettingView*)readerBottomSettingView;
 - (void)readerBottomSettingViewTapPagingBtn:(ReaderBottomSettingView*)readerBottomSettingView;
+- (void)readerBottomSettingView:(ReaderBottomSettingView*)readerBottomSettingView changedSliderValue:(CGFloat)sliderValue;
 
 @end
 

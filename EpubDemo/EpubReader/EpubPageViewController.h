@@ -15,7 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol EpubPageViewControllerDelegate <NSObject>
 
-- (void)singleTapEpubPageViewController:(EpubPageViewController*)epubPageViewController;
+- (void)singleTapEpubPageViewControllerToShowPrePage:(EpubPageViewController*)epubPageViewController;
+- (void)singleTapEpubPageViewControllerToShowNextPage:(EpubPageViewController*)epubPageViewController;
+- (void)singleTapEpubPageViewControllerToShowSetting:(EpubPageViewController*)epubPageViewController;
 - (void)doubleTapEpubPageViewController:(EpubPageViewController*)epubPageViewController;
 - (void)epubPageViewController:(EpubPageViewController*)epubPageViewController curPageInChapter:(NSNumber*)curPage countPageInChapter:(NSNumber *)countPage;
 

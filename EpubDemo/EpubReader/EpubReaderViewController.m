@@ -174,7 +174,79 @@
     [self.view addSubview:_pageViewController.view];
     [self.view sendSubviewToBack:_pageViewController.view];
     [self addChildViewController:_pageViewController];
+}
+
+- (EpubPageViewController*)showPrePageVCWithCurPageVC:(EpubPageViewController*)curPageVC {
+    NSInteger chapterIndex = curPageVC.chapterIndex;
+    NSInteger pageIndex = curPageVC.pageIndex;
     
+    NSInteger countOfPage = [[self.parserManager.chapterPageInfoDic objectForKey:curPageVC.chapterFileNameStr] integerValue];
+    if (countOfPage < 1) {
+        return nil;
+    }
+    
+    if (chapterIndex == 0 && pageIndex == 0) {
+        //第一页 或 没有找到
+        return nil;
+    }
+    
+    EpubPageViewController *pageVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
+    pageVC.delegate = self;
+    pageVC.parserManager = self.parserManager;
+    
+    if (pageIndex > 0) { //pre page
+        pageVC.chapterIndex = chapterIndex;
+        pageVC.pageIndex = pageIndex - 1;
+        self.pageIndex = pageIndex - 1;
+        
+        return pageVC;
+    } else { //pre chapter
+        pageVC.chapterIndex = chapterIndex - 1;
+        pageVC.isPreChapter = YES;
+        self.chapterIndex = chapterIndex - 1;
+        
+        return pageVC;
+    }
+    
+    return nil;
+}
+
+- (EpubPageViewController*)showNextPageVCWithCurPageVC:(EpubPageViewController*)curPageVC {
+    NSInteger chapterIndex = curPageVC.chapterIndex;
+    NSInteger pageIndex = curPageVC.pageIndex;
+    
+    NSInteger countOfPage = [[self.parserManager.chapterPageInfoDic objectForKey:curPageVC.chapterFileNameStr] integerValue];
+    if (countOfPage < 1) {
+        return nil;
+    }
+    
+    if (chapterIndex < 0) {
+        //说明是 补充页
+        return nil;
+    }
+    
+    EpubPageViewController *pageVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
+    pageVC.delegate = self;
+    pageVC.parserManager = self.parserManager;
+    
+    if (pageIndex + 1 < countOfPage) { //next page
+        pageVC.chapterIndex = chapterIndex;
+        pageVC.pageIndex = pageIndex + 1;
+        self.pageIndex = pageIndex + 1;
+        
+        return pageVC;
+    } else { //next chapter
+        NSInteger chapterCount = self.parserManager.catelogInfoArr.count;
+        if (chapterIndex < chapterCount - 1) {
+            pageVC.chapterIndex = chapterIndex + 1;
+            self.chapterIndex = chapterIndex + 1;
+            
+            return pageVC;
+        } else {
+            return nil;
+        }
+    }
+    return nil;
 }
 
 #pragma mark - KVO
@@ -269,97 +341,35 @@
 
 #pragma mark - UIPageViewControllerDataSource
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    EpubPageViewController *pageCurVC = (EpubPageViewController*)viewController;
-    NSInteger pageRefIndex = pageCurVC.chapterIndex;
-    NSInteger offYIndexInPage = pageCurVC.pageIndex;
-    
-    NSInteger countOfPage = [[self.parserManager.chapterPageInfoDic objectForKey:pageCurVC.chapterFileNameStr] integerValue];
-    if (countOfPage < 1) {
-        return nil;
-    }
-    
-    if (pageRefIndex == 0 && offYIndexInPage == 0) {
-        //第一页 或 没有找到
-        return nil;
-    }
-    
-    if (offYIndexInPage >0) {
-        //同一页内 上滚动翻页
-        EpubPageViewController *pageVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
-        pageVC.delegate = self;
-        pageVC.parserManager = self.parserManager;
-        pageVC.chapterIndex = pageRefIndex;
-        pageVC.pageIndex = offYIndexInPage - 1;
-        
-        self.pageIndex = offYIndexInPage-1;
-        
-        return pageVC;
-    } else {
-        //上一页
-        EpubPageViewController *pageVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
-        pageVC.delegate = self;
-        pageVC.parserManager = self.parserManager;
-        pageVC.chapterIndex = pageRefIndex-1;
-        pageVC.isPreChapter = YES;
-        
-        self.chapterIndex = pageRefIndex-1;
-        
-        return pageVC;
-    }
-    
-    return nil;
+    return [self showPrePageVCWithCurPageVC:(EpubPageViewController*)viewController];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    
-    //对页显示要注意单数补空白
-    EpubPageViewController *pageCurVC=(EpubPageViewController*)viewController;
-    NSInteger pageRefIndex = pageCurVC.chapterIndex;
-    NSInteger offYIndexInPage = pageCurVC.pageIndex;
-    
-    NSInteger countOfPage = [[self.parserManager.chapterPageInfoDic objectForKey:pageCurVC.chapterFileNameStr] integerValue];
-    if (countOfPage < 1) {
-        return nil;
-    }
-    
-    if (pageRefIndex < 0) {
-        //说明是 补充页
-        return nil;
-    }
-    
-    if (offYIndexInPage + 1 < countOfPage) {
-        //同一页内 下滚动翻页
-        EpubPageViewController *pageVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
-        pageVC.delegate = self;
-        pageVC.parserManager = self.parserManager;
-        pageVC.chapterIndex = pageRefIndex;
-        pageVC.pageIndex = offYIndexInPage + 1;
-        
-        self.pageIndex = offYIndexInPage + 1;
-        
-        return pageVC;
-    } else {
-        //下一页
-        NSInteger pageCount = [self.parserManager.catelogInfoArr count];
-        
-        if (pageRefIndex < pageCount - 1) {
-            EpubPageViewController *pageVC = [[EpubPageViewController alloc] initWithNibName:@"EpubPageViewController" bundle:nil];
-            pageVC.delegate = self;
-            pageVC.parserManager = self.parserManager;
-            pageVC.chapterIndex = pageRefIndex+1;
-            
-            self.chapterIndex = pageRefIndex+1;
-            
-            return pageVC;
-        }
-    }
-    return nil;
+    return [self showNextPageVCWithCurPageVC:(EpubPageViewController*)viewController];
 }
 
 #pragma mark - UIPageViewControllerDelegate
 
 #pragma mark - EpubPageViewControllerDelegate
-- (void)singleTapEpubPageViewController:(EpubPageViewController*)epubPageViewController {
+- (void)singleTapEpubPageViewControllerToShowPrePage:(EpubPageViewController*)epubPageViewController {
+    EpubPageViewController* prePage = [self showPrePageVCWithCurPageVC:epubPageViewController];
+    if (prePage) {
+        [self.pageViewController setViewControllers:@[prePage] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:^(BOOL finished) {
+            
+        }];
+    }
+}
+
+- (void)singleTapEpubPageViewControllerToShowNextPage:(EpubPageViewController*)epubPageViewController {
+    EpubPageViewController* nextPage = [self showNextPageVCWithCurPageVC:epubPageViewController];
+    if (nextPage) {
+        [self.pageViewController setViewControllers:@[nextPage] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+            
+        }];
+    }
+}
+
+- (void)singleTapEpubPageViewControllerToShowSetting:(EpubPageViewController*)epubPageViewController {
     switch (self.parserManager.settingManager.settingStatus) {
         case ReaderShowSettingStatusOfTopAndBottom: {
             self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfNone;
@@ -439,6 +449,11 @@
 
 - (void)readerBottomSettingViewTapPagingBtn:(ReaderBottomSettingView*)readerBottomSettingView {
     self.parserManager.settingManager.settingStatus = ReaderShowSettingStatusOfPaging;
+}
+
+- (void)readerBottomSettingView:(ReaderBottomSettingView*)readerBottomSettingView changedSliderValue:(CGFloat)sliderValue {
+    self.pageIndex = floorf(sliderValue);
+    [self showPageViewController];
 }
 
 #pragma mark - EpubCatalogViewControllerDelegate

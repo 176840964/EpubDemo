@@ -65,4 +65,12 @@
     }
 }
 
+- (IBAction)onChangedSliderValue:(id)sender {
+    UISlider *slider = sender;
+    NSLog(@"slider.value:%@", @(floorf(slider.value)));
+    if ([self.delegate respondsToSelector:@selector(readerBottomSettingView:changedSliderValue:)]) {
+        [self.delegate readerBottomSettingView:self changedSliderValue:slider.value];
+    }
+}
+
 @end

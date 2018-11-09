@@ -39,8 +39,11 @@
                         <action selector="onTapNextChapterBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="dVV-JT-0g3"/>
                     </connections>
                 </button>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="T9D-Gp-wAp">
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T9D-Gp-wAp">
                     <rect key="frame" x="58" y="2" width="256" height="31"/>
+                    <connections>
+                        <action selector="onChangedSliderValue:" destination="iN0-l3-epB" eventType="valueChanged" id="GNb-K3-L89"/>
+                    </connections>
                 </slider>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xCh-wY-2lv">
                     <rect key="frame" x="0.0" y="26" width="93" height="96"/>
