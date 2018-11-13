@@ -8,6 +8,7 @@
 
 #import "EpubPageViewController.h"
 #import "EpubPageWebView.h"
+#import "CustomFileManager.h"
 
 @interface EpubPageViewController () <UIWebViewDelegate, UIGestureRecognizerDelegate>
 @property (nonatomic, weak) IBOutlet UILabel *titleLab;
@@ -117,38 +118,33 @@
 
 #pragma mark - GestureRecognizer
 - (void)createGestureRecognizer {
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDoubleTapGestureRecognizer:)];
-    doubleTap.delegate = self;
-    doubleTap.numberOfTapsRequired = 2;
-    [self.pageWebview addGestureRecognizer:doubleTap];
-    
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSingleTapGestureRecognizer:)];
     singleTap.delegate = self;
-    [singleTap requireGestureRecognizerToFail:doubleTap];
     [self.pageWebview addGestureRecognizer:singleTap];
-    
 }
 
 - (void)onSingleTapGestureRecognizer:(UITapGestureRecognizer *)tapGesture {
     CGPoint point = [tapGesture locationInView:tapGesture.view];
-    if (point.x < CGRectGetWidth([UIScreen mainScreen].bounds) / 3.0) {
-        if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowPrePage:)]) {
-            [self.delegate singleTapEpubPageViewControllerToShowPrePage:self];
-        }
-    } else if (point.x > CGRectGetWidth([UIScreen mainScreen].bounds) / 3.0 * 2.0) {
-        if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowNextPage:)]) {
-            [self.delegate singleTapEpubPageViewControllerToShowNextPage:self];
+    
+    NSString *filePath = [self getImageContentFromPoint:point];
+    if (filePath) {
+        if ([self.delegate respondsToSelector:@selector(epubPageViewController:showImageWithFilePath:)]) {
+            [self.delegate epubPageViewController:self showImageWithFilePath:filePath];
         }
     } else {
-        if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowSetting:)]) {
-            [self.delegate singleTapEpubPageViewControllerToShowSetting:self];
+        if (point.x < CGRectGetWidth([UIScreen mainScreen].bounds) / 3.0) {
+            if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowPrePage:)]) {
+                [self.delegate singleTapEpubPageViewControllerToShowPrePage:self];
+            }
+        } else if (point.x > CGRectGetWidth([UIScreen mainScreen].bounds) / 3.0 * 2.0) {
+            if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowNextPage:)]) {
+                [self.delegate singleTapEpubPageViewControllerToShowNextPage:self];
+            }
+        } else {
+            if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowSetting:)]) {
+                [self.delegate singleTapEpubPageViewControllerToShowSetting:self];
+            }
         }
-    }
-}
-
-- (void)onDoubleTapGestureRecognizer:(UITapGestureRecognizer *)tapGesture {
-    if ([self.delegate respondsToSelector:@selector(doubleTapEpubPageViewController:)]) {
-        [self.delegate doubleTapEpubPageViewController:self];
     }
 }
 
@@ -287,6 +283,8 @@
         [arrJs addObject:addcss_h1TextColor];
         NSString *addcss_h2TextColor = [NSString stringWithFormat:@"addCSSRule('h2', 'color: %@;')", themeTextColor];
         [arrJs addObject:addcss_h2TextColor];
+        NSString *addcss_h3TextColor = [NSString stringWithFormat:@"addCSSRule('h3', 'color: %@;')", themeTextColor];
+        [arrJs addObject:addcss_h3TextColor];
         NSString *addcss_pTextColor = [NSString stringWithFormat:@"addCSSRule('p', 'color: %@;')", themeTextColor];
         [arrJs addObject:addcss_pTextColor];
     }
@@ -314,6 +312,21 @@
     NSString *jsFontStyle = [NSString stringWithFormat:@"<style type=\"text/css\"> @font-face{ font-family: '%@'; src: url('%@'); } </style>", fontName, fontFile];
     
     return jsFontStyle;
+}
+
+- (NSString *)getImageContentFromPoint:(CGPoint)point {
+    NSString *js = [NSString stringWithFormat:@"document.elementFromPoint(%f, %f).tagName", point.x, point.y];
+    NSString *tagName = [self.pageWebview stringByEvaluatingJavaScriptFromString:js];
+    if ([[tagName uppercaseString] isEqualToString:@"IMG"]) {
+        NSString *imgUrl = [NSString stringWithFormat:@"document.elementFromPoint(%f, %f).src", point.x, point.y];
+        NSString *fileUrl = [self.pageWebview stringByEvaluatingJavaScriptFromString:imgUrl];
+        NSString *filePath = [fileUrl stringByReplacingOccurrencesOfString:@"file://" withString:@""].stringByRemovingPercentEncoding;
+        
+        if ([CustomFileManager isFileExist:filePath]) {
+            return filePath;
+        }
+    }
+    return nil;
 }
 
 @end

@@ -23,7 +23,7 @@
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"bookCell"];
     
-    self.booksArr = @[@"盗墓笔记", @"饮食业成本核算", @"“八个必须坚持”学习读本", @"《实践论》《矛盾论》导读", @"保持共产党员先进性教育学习文件导读", @"为人处世曾国藩", @"云林堂饮食制度集"];
+    self.booksArr = @[@"盗墓笔记", @"饮食业成本核算", @"“八个必须坚持”学习读本", @"《实践论》《矛盾论》导读", @"保持共产党员先进性教育学习文件导读", @"为人处世曾国藩", @"云林堂饮食制度集", @"如何阅读一首诗"];
 }
 
 #pragma mark - Navigation

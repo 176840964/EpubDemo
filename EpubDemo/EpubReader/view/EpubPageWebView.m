@@ -11,6 +11,10 @@
 
 @implementation EpubPageWebView
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+}
+
 - (void)loadHTMLWithPath:(NSString*)filePath jsContent:(NSString *)jsContent {
     NSString *htmlContent = [self.class HTMLContentFromFile:filePath AddJsContent:jsContent];
     NSURL *baseUrl = [NSURL fileURLWithPath:filePath];

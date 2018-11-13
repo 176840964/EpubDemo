@@ -16,6 +16,7 @@
 #import "ThemeSettingView.h"
 #import "PagingSettingView.h"
 #import "EpubSearchViewController.h"
+#import "EpubImagePreViewController.h"
 
 @interface EpubReaderViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource, EpubPageViewControllerDelegate, ReaderTopSettingViewDelegate, ReaderBottomSettingViewDelegate, EpubCatalogViewControllerDelegate, FontSettingViewDelegate, ThemeSettingViewDelegate, PagingSettingViewDelegate, EpubSearchViewControllerDelegate>
 @property (strong, nonatomic) EpubParserManager *parserManager;
@@ -29,6 +30,8 @@
 @property (assign, nonatomic) NSInteger chapterIndex;
 @property (assign, nonatomic) NSInteger pageIndex;
 @property (assign, nonatomic) BOOL isShowStatusBar;
+
+@property (copy, nonatomic) NSString *showImageFilePath;
 
 @end
 
@@ -80,10 +83,14 @@
         EpubCatalogViewController *catelogVc = segue.destinationViewController;
         catelogVc.delegate = self;
         catelogVc.parserManager = self.parserManager;
-    }else if ([segue.identifier isEqualToString:@"presentEpubSearchViewController"]) {
+    } else if ([segue.identifier isEqualToString:@"presentEpubSearchViewController"]) {
         EpubSearchViewController *searchVc = segue.destinationViewController;
         searchVc.delegate = self;
         searchVc.parserManager = self.parserManager;
+    } else if ([segue.identifier isEqualToString:@"presentEpubImagePreViewController"]) {
+        EpubImagePreViewController *vc = segue.destinationViewController;
+        vc.imageFilePath = self.showImageFilePath;
+        
     }
 }
 
@@ -394,7 +401,9 @@
     }
 }
 
-- (void)doubleTapEpubPageViewController:(EpubPageViewController*)epubPageViewController {
+- (void)epubPageViewController:(EpubPageViewController*)epubPageViewController showImageWithFilePath:(NSString *)filePath; {
+    self.showImageFilePath = filePath;
+    [self performSegueWithIdentifier:@"presentEpubImagePreViewController" sender:self];
 }
 
 - (void)epubPageViewController:(EpubPageViewController*)epubPageViewController curPageInChapter:(NSNumber*)curPage countPageInChapter:(NSNumber *)countPage; {

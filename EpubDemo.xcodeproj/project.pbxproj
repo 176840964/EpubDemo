@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8202381E21996246009F1458 /* 如何阅读一首诗.epub in Resources */ = {isa = PBXBuildFile; fileRef = 8202381D21996245009F1458 /* 如何阅读一首诗.epub */; };
+		8202382121996C61009F1458 /* EpubImagePreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8202382021996C61009F1458 /* EpubImagePreViewController.m */; };
 		821A545F21940DAA00D8AA33 /* 饮食业成本核算.epub in Resources */ = {isa = PBXBuildFile; fileRef = 821A545821940DA900D8AA33 /* 饮食业成本核算.epub */; };
 		821A546021940DAA00D8AA33 /* 为人处世曾国藩.epub in Resources */ = {isa = PBXBuildFile; fileRef = 821A545921940DAA00D8AA33 /* 为人处世曾国藩.epub */; };
 		821A546121940DAA00D8AA33 /* 保持共产党员先进性教育学习文件导读.epub in Resources */ = {isa = PBXBuildFile; fileRef = 821A545A21940DAA00D8AA33 /* 保持共产党员先进性教育学习文件导读.epub */; };
@@ -70,6 +72,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8202381D21996245009F1458 /* 如何阅读一首诗.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "如何阅读一首诗.epub"; sourceTree = "<group>"; };
+		8202381F21996C61009F1458 /* EpubImagePreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EpubImagePreViewController.h; sourceTree = "<group>"; };
+		8202382021996C61009F1458 /* EpubImagePreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EpubImagePreViewController.m; sourceTree = "<group>"; };
 		821A545821940DA900D8AA33 /* 饮食业成本核算.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "饮食业成本核算.epub"; sourceTree = "<group>"; };
 		821A545921940DAA00D8AA33 /* 为人处世曾国藩.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "为人处世曾国藩.epub"; sourceTree = "<group>"; };
 		821A545A21940DAA00D8AA33 /* 保持共产党员先进性教育学习文件导读.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "保持共产党员先进性教育学习文件导读.epub"; sourceTree = "<group>"; };
@@ -230,6 +235,7 @@
 		82260F66217EB52800DC064B /* EpubRes */ = {
 			isa = PBXGroup;
 			children = (
+				8202381D21996245009F1458 /* 如何阅读一首诗.epub */,
 				821A545B21940DAA00D8AA33 /* “八个必须坚持”学习读本.epub */,
 				821A545C21940DAA00D8AA33 /* 《实践论》《矛盾论》导读.epub */,
 				821A545D21940DAA00D8AA33 /* 云林堂饮食制度集.epub */,
@@ -255,6 +261,8 @@
 				8289E56121904D0D00BCFB57 /* EpubCatalogViewController.m */,
 				8289E582219290DF00BCFB57 /* EpubSearchViewController.h */,
 				8289E583219290DF00BCFB57 /* EpubSearchViewController.m */,
+				8202381F21996C61009F1458 /* EpubImagePreViewController.h */,
+				8202382021996C61009F1458 /* EpubImagePreViewController.m */,
 			);
 			path = EpubReader;
 			sourceTree = "<group>";
@@ -502,6 +510,7 @@
 				8289E57821917FFD00BCFB57 /* ThemeSettingView.xib in Resources */,
 				82260FBE2180245200DC064B /* EpubPageViewController.xib in Resources */,
 				8289E556218FE99400BCFB57 /* ReaderBottomSettingView.xib in Resources */,
+				8202381E21996246009F1458 /* 如何阅读一首诗.epub in Resources */,
 				821A546321940DAA00D8AA33 /* 《实践论》《矛盾论》导读.epub in Resources */,
 				8289E5872192BEA100BCFB57 /* SearchWebView.js in Resources */,
 				8289E5682191336C00BCFB57 /* FontSettingView.xib in Resources */,
@@ -533,6 +542,7 @@
 				8289E56B2191428200BCFB57 /* ReaderSettingManager.m in Sources */,
 				82260FBD2180245200DC064B /* EpubPageViewController.m in Sources */,
 				82260F82217EBA1E00DC064B /* zip.c in Sources */,
+				8202382121996C61009F1458 /* EpubImagePreViewController.m in Sources */,
 				82260FAE217EC25E00DC064B /* EpubParserManager.m in Sources */,
 				82260F52217EB47A00DC064B /* AppDelegate.m in Sources */,
 				8289E57621917FEF00BCFB57 /* ThemeSettingView.m in Sources */,

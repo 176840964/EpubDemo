@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)singleTapEpubPageViewControllerToShowPrePage:(EpubPageViewController*)epubPageViewController;
 - (void)singleTapEpubPageViewControllerToShowNextPage:(EpubPageViewController*)epubPageViewController;
 - (void)singleTapEpubPageViewControllerToShowSetting:(EpubPageViewController*)epubPageViewController;
-- (void)doubleTapEpubPageViewController:(EpubPageViewController*)epubPageViewController;
+- (void)epubPageViewController:(EpubPageViewController*)epubPageViewController showImageWithFilePath:(NSString *)filePath;
 - (void)epubPageViewController:(EpubPageViewController*)epubPageViewController curPageInChapter:(NSNumber*)curPage countPageInChapter:(NSNumber *)countPage;
 
 @end

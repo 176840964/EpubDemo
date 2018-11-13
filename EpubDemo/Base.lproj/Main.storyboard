@@ -64,6 +64,7 @@
                     <connections>
                         <segue destination="xdE-Z1-VvS" kind="presentation" identifier="presentEpubCatalogViewController" id="3Jk-Qo-7s9"/>
                         <segue destination="alk-ra-UMk" kind="presentation" identifier="presentEpubSearchViewController" id="zFP-2A-lHH"/>
+                        <segue destination="wlz-QD-CyL" kind="presentation" identifier="presentEpubImagePreViewController" modalTransitionStyle="crossDissolve" id="h6R-Z4-LDf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dfQ-5c-agE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -195,6 +196,42 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6xE-zv-cbv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1598" y="1618"/>
+        </scene>
+        <!--Epub Image Pre View Controller-->
+        <scene sceneID="LVG-1z-CcH">
+            <objects>
+                <viewController storyboardIdentifier="EpubImagePreViewController" id="wlz-QD-CyL" customClass="EpubImagePreViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4ER-RY-y4b"/>
+                        <viewControllerLayoutGuide type="bottom" id="TFj-WY-P3c"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JDU-Bi-z0h">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="4" translatesAutoresizingMaskIntoConstraints="NO" id="XB7-1E-UjY">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="delegate" destination="wlz-QD-CyL" id="NTo-HA-cgT"/>
+                                </connections>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="XB7-1E-UjY" secondAttribute="trailing" id="1AR-NS-elO"/>
+                            <constraint firstItem="TFj-WY-P3c" firstAttribute="top" secondItem="XB7-1E-UjY" secondAttribute="bottom" id="6AW-rC-e7a"/>
+                            <constraint firstItem="XB7-1E-UjY" firstAttribute="top" secondItem="JDU-Bi-z0h" secondAttribute="top" id="Bmi-0H-cXu"/>
+                            <constraint firstItem="XB7-1E-UjY" firstAttribute="leading" secondItem="JDU-Bi-z0h" secondAttribute="leading" id="Nsm-Ii-yuB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="scrollView" destination="XB7-1E-UjY" id="OY7-Ab-8IT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JgU-yF-O7x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2546" y="1618"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="T3J-QU-Xfi">
