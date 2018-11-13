@@ -12,11 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EpubPageWebView : UIWebView
 + (NSString*)HTMLContentFromFile:(NSString*)fileFullPath AddJsContent:(NSString*)jsContent;
++ (NSString*)jsContentWithSetting:(ReaderSettingManager*)settingManager;
+
 - (void)loadHTMLWithPath:(NSString*)filePath jsContent:(NSString *)jsContent;
 
 - (NSInteger)highlightAllOccurencesOfString:(NSString*)str;
 - (void)removeAllHighlights;
 
+- (NSString *)getImageContentFromPoint:(CGPoint)point;
 @end
 
 NS_ASSUME_NONNULL_END
