@@ -12,7 +12,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EpubPageViewController">
             <connections>
                 <outlet property="pageStatusLab" destination="4Gv-6J-R6d" id="bo6-dz-6Hz"/>
-                <outlet property="pageWebview" destination="aPv-iF-cjy" id="vUk-r7-SNu"/>
+                <outlet property="pageWKWebView" destination="TuU-Fw-eSp" id="5o8-ov-SbF"/>
+                <outlet property="pageWebview" destination="CH1-hZ-ma7" id="uxT-UO-ij4"/>
                 <outlet property="timeStatusLab" destination="gUs-qe-Ryo" id="IIU-mh-sIY"/>
                 <outlet property="titleLab" destination="f4H-nQ-xA3" id="GQa-dO-Pia"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -52,27 +53,32 @@
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aPv-iF-cjy" customClass="EpubPageWebView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CH1-hZ-ma7" customClass="EpubPageWebView">
+                    <rect key="frame" x="20" y="40" width="335" height="607"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TuU-Fw-eSp" customClass="EpubPageWKWebView">
                     <rect key="frame" x="20" y="40" width="335" height="607"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="Z4Q-Pm-21J"/>
-                    </connections>
-                </webView>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="aPv-iF-cjy" secondAttribute="trailing" constant="20" id="7I9-M9-UAR"/>
+                <constraint firstItem="4Gv-6J-R6d" firstAttribute="top" secondItem="TuU-Fw-eSp" secondAttribute="bottom" id="33H-wl-JHX"/>
+                <constraint firstAttribute="trailing" secondItem="TuU-Fw-eSp" secondAttribute="trailing" constant="20" id="5M2-Lj-vsX"/>
+                <constraint firstItem="TuU-Fw-eSp" firstAttribute="top" secondItem="f4H-nQ-xA3" secondAttribute="bottom" id="Coa-jq-E9W"/>
+                <constraint firstItem="CH1-hZ-ma7" firstAttribute="top" secondItem="f4H-nQ-xA3" secondAttribute="bottom" id="GkB-WW-G6u"/>
                 <constraint firstItem="4Gv-6J-R6d" firstAttribute="width" secondItem="gUs-qe-Ryo" secondAttribute="width" id="IaA-pv-m6i"/>
+                <constraint firstAttribute="trailing" secondItem="CH1-hZ-ma7" secondAttribute="trailing" constant="20" id="KsX-PL-E8n"/>
+                <constraint firstItem="CH1-hZ-ma7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="NMC-Fq-zgi"/>
                 <constraint firstAttribute="bottom" secondItem="4Gv-6J-R6d" secondAttribute="bottom" id="OQ1-gP-4r0"/>
                 <constraint firstItem="gUs-qe-Ryo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="ScS-sy-kp9"/>
                 <constraint firstAttribute="trailing" secondItem="f4H-nQ-xA3" secondAttribute="trailing" constant="20" id="Uy4-Ex-qMb"/>
-                <constraint firstItem="aPv-iF-cjy" firstAttribute="top" secondItem="f4H-nQ-xA3" secondAttribute="bottom" id="bOi-ak-Z93"/>
+                <constraint firstItem="4Gv-6J-R6d" firstAttribute="top" secondItem="CH1-hZ-ma7" secondAttribute="bottom" id="Vi3-jx-cfG"/>
+                <constraint firstItem="TuU-Fw-eSp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="b54-Vq-hJN"/>
                 <constraint firstItem="4Gv-6J-R6d" firstAttribute="leading" secondItem="gUs-qe-Ryo" secondAttribute="trailing" id="bS1-Od-5bL"/>
                 <constraint firstItem="f4H-nQ-xA3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bdb-Rd-Pmn"/>
-                <constraint firstItem="4Gv-6J-R6d" firstAttribute="top" secondItem="aPv-iF-cjy" secondAttribute="bottom" id="jPS-qV-dKq"/>
                 <constraint firstAttribute="trailing" secondItem="4Gv-6J-R6d" secondAttribute="trailing" constant="20" id="oNW-Qj-Ex7"/>
-                <constraint firstItem="aPv-iF-cjy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="p2A-rX-eEm"/>
                 <constraint firstAttribute="bottom" secondItem="gUs-qe-Ryo" secondAttribute="bottom" id="s22-dK-vpi"/>
                 <constraint firstItem="f4H-nQ-xA3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="vlw-KW-8eW"/>
             </constraints>

@@ -8,12 +8,18 @@
 
 #import "EpubPageViewController.h"
 #import "EpubPageWebView.h"
+#import "CustomFileManager.h"
+#import "EpubPageWKWebView.h"
 
-@interface EpubPageViewController () <UIWebViewDelegate, UIGestureRecognizerDelegate>
+@interface EpubPageViewController () <UIGestureRecognizerDelegate, EpubPageWKWebViewDelegate, EpubPageWebViewDelegate>
 @property (nonatomic, weak) IBOutlet UILabel *titleLab;
 @property (nonatomic, weak) IBOutlet UILabel *pageStatusLab;
 @property (nonatomic, weak) IBOutlet UILabel *timeStatusLab;
+
 @property (nonatomic, weak) IBOutlet EpubPageWebView *pageWebview;
+
+//wk
+@property (nonatomic, weak) IBOutlet EpubPageWKWebView *pageWKWebView;
 
 @end
 
@@ -22,6 +28,8 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        self.pageWebview.hidden = YES;
+        self.pageWKWebView.hidden = YES;
         self.chapterIndex = -1;
         self.pageIndex = -1;
     }
@@ -33,13 +41,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    for (UIView* v in self.pageWebview.subviews){
-        if([v isKindOfClass:[UIScrollView class]]) {
-            UIScrollView *sv = (UIScrollView*)v;
-            sv.scrollEnabled = NO;
-            sv.bounces = NO;
-        }
-    }
+#warning 切换阅读页加载方式
+    self.showType = PageViewShowTypeOfUIWebView;
     
     NSString *themeBodyColor = [self.parserManager.settingManager.themeArr[self.parserManager.settingManager.currentThemeIndex] objectForKey:@"body"];
     UIColor *bgColor = [CustomTools UIColorFromRGBString:themeBodyColor];
@@ -47,33 +50,62 @@
     
     if (self.chapterIndex > -1) {
         self.chapterFileNameStr = [self.parserManager chapterFileNameByIndex:self.chapterIndex];
-        NSString *filePath = [NSString stringWithFormat:@"%@%@", self.parserManager.contentFilesFolder, self.chapterFileNameStr];
         
-        if (self.parserManager.jsContent.length < 1) {
-            self.parserManager.settingManager.containerSize = self.pageWebview.frame.size;
-            self.parserManager.jsContent = [EpubPageWebView jsContentWithSetting:self.parserManager.settingManager];
+        if (self.showType == PageViewShowTypeOfWKWebView) {//WKWebView
+            self.pageWKWebView.hidden = NO;
+            
+            self.pageWKWebView.delegate = self;
+            self.pageWKWebView.parserManager = self.parserManager;
+            [self.pageWKWebView loadHTMLChapterFileNameStr:self.chapterFileNameStr];
+            
+        } else {//UIWebView
+            self.pageWebview.hidden = NO;
+            
+            if (self.parserManager.jsContent.length < 1) {
+                self.parserManager.settingManager.containerSize = self.pageWebview.frame.size;
+                self.parserManager.jsContent = [EpubPageWebView jsContentWithSetting:self.parserManager.settingManager];
+            }
+            
+            self.pageWebview.delegate = self;
+            self.pageWebview.parserManager = self.parserManager;
+            [self.pageWebview loadHTMLWithChapterFileName:self.chapterFileNameStr jsContent:self.parserManager.jsContent];
         }
-        
-        [self.pageWebview loadHTMLWithPath:filePath jsContent:self.parserManager.jsContent];
     }
     
     [self createGestureRecognizer];
 }
 
 #pragma mark -
-- (void)gotoIndexOfPageWithIndex:(NSInteger)pageIndex andCountOfPage:(NSInteger)countOfPage {
-    //页码内跳转
-    if(pageIndex >= countOfPage) {
-        pageIndex = countOfPage - 1;
+- (void)gotoPageIndex {
+    NSInteger countOfPage = [[self.parserManager.chapterPageInfoDic objectForKey:self.chapterFileNameStr] integerValue];
+    NSLog(@"countOfPage:%ld", (long)countOfPage);
+    
+    //滚动索引
+    if (self.isPreChapter) {
+        self.pageIndex = countOfPage - 1;
+    }
+    if (self.pageIndex >= countOfPage) {
+        self.pageIndex = countOfPage - 1;
+    }
+    if (self.pageIndex < 0) {
+        self.pageIndex = 0;
     }
     
-    CGFloat pageOffset = pageIndex * self.pageWebview.bounds.size.width;
+    NSLog(@"self.pageIndex:%lo", self.pageIndex);
     
-    NSString* goToOffsetFunc = [NSString stringWithFormat:@" function pageScroll(xOffset){ window.scroll(xOffset,0); } "];
-    NSString* goTo = [NSString stringWithFormat:@"pageScroll(%f)", pageOffset];
-    
-    [self.pageWebview stringByEvaluatingJavaScriptFromString:goToOffsetFunc];
-    [self.pageWebview stringByEvaluatingJavaScriptFromString:goTo];
+    if (self.showType == PageViewShowTypeOfWKWebView) {
+        if (self.parserManager.settingManager.currentSearchText.length > 0) {
+            [self.pageWKWebView highlightAllOccurencesOfString:self.parserManager.settingManager.currentSearchText searchCount:^(NSInteger count) {
+            }];
+        }
+        [self.pageWKWebView scrollToPageByIndex:self.pageIndex];
+        
+    } else {
+        if (self.parserManager.settingManager.currentSearchText.length > 0) {
+            [self.pageWebview highlightAllOccurencesOfString:self.parserManager.settingManager.currentSearchText];
+        }
+        [self.pageWebview scrollToPageByIndex:self.pageIndex];
+    }
     
     [self reloadSubviews];
 }
@@ -97,31 +129,41 @@
 - (void)createGestureRecognizer {
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSingleTapGestureRecognizer:)];
     singleTap.delegate = self;
-    [self.pageWebview addGestureRecognizer:singleTap];
+    [self.view addGestureRecognizer:singleTap];
 }
 
 - (void)onSingleTapGestureRecognizer:(UITapGestureRecognizer *)tapGesture {
     CGPoint point = [tapGesture locationInView:tapGesture.view];
     
-    NSString *filePath = [self.pageWebview getImageContentFromPoint:point];
-    if (filePath) {
-        if ([self.delegate respondsToSelector:@selector(epubPageViewController:showImageWithFilePath:)]) {
-            [self.delegate epubPageViewController:self showImageWithFilePath:filePath];
-        }
-    } else {
-        if (point.x < CGRectGetWidth([UIScreen mainScreen].bounds) / 3.0) {
-            if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowPrePage:)]) {
-                [self.delegate singleTapEpubPageViewControllerToShowPrePage:self];
-            }
-        } else if (point.x > CGRectGetWidth([UIScreen mainScreen].bounds) / 3.0 * 2.0) {
-            if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowNextPage:)]) {
-                [self.delegate singleTapEpubPageViewControllerToShowNextPage:self];
+    void (^block)(NSString *filePath) = ^(NSString * filePath) {
+        if (filePath.length > 0) {
+            if ([self.delegate respondsToSelector:@selector(epubPageViewController:showImageWithFilePath:)]) {
+                [self.delegate epubPageViewController:self showImageWithFilePath:filePath];
             }
         } else {
-            if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowSetting:)]) {
-                [self.delegate singleTapEpubPageViewControllerToShowSetting:self];
+            if (point.x < CGRectGetWidth([UIScreen mainScreen].bounds) / 3.0) {
+                if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowPrePage:)]) {
+                    [self.delegate singleTapEpubPageViewControllerToShowPrePage:self];
+                }
+            } else if (point.x > CGRectGetWidth([UIScreen mainScreen].bounds) / 3.0 * 2.0) {
+                if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowNextPage:)]) {
+                    [self.delegate singleTapEpubPageViewControllerToShowNextPage:self];
+                }
+            } else {
+                if ([self.delegate respondsToSelector:@selector(singleTapEpubPageViewControllerToShowSetting:)]) {
+                    [self.delegate singleTapEpubPageViewControllerToShowSetting:self];
+                }
             }
         }
+    };
+    
+    if (self.showType == PageViewShowTypeOfWKWebView) {
+        [self.pageWKWebView getImageContentFromPoint:point completion:^(NSString *filePath) {
+            block(filePath);
+        }];
+    } else {
+        NSString *filePath = [self.pageWebview getImageContentFromPoint:point];
+        block(filePath);
     }
 }
 
@@ -130,53 +172,14 @@
     return YES;
 }
 
-#pragma mark - UIWebViewDelegate
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if (navigationType == UIWebViewNavigationTypeLinkClicked )
-    {
-        //禁止内容里面的超链接
-        return NO;
-    }
-    return YES;
+#pragma mark - EpubPageWKWebViewDelegate
+- (void)showEpubPageWKWebView:(EpubPageWKWebView*)epubPageWKWebView {
+    [self gotoPageIndex];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)theWebView {
-    BOOL isCalc = [self.parserManager.chapterPageInfoDic.allKeys containsObject:self.chapterFileNameStr];
-    
-    if (!isCalc && self.chapterIndex > -1) {
-        //需要计算  页面的信息
-        NSInteger totalWidth = [[theWebView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollWidth"] integerValue];
-        NSLog(@"totalWidth  %lo",totalWidth);
-        
-        NSInteger theWebSizeWidth = theWebView.bounds.size.width;
-        NSInteger countOfPage = (NSInteger)((float)totalWidth / theWebSizeWidth);
-        
-        [self.parserManager.chapterPageInfoDic setObject:@(countOfPage) forKey:self.chapterFileNameStr];
-    }
-    
-    NSInteger countOfPage = [[self.parserManager.chapterPageInfoDic objectForKey:self.chapterFileNameStr] integerValue];
-    NSLog(@"countOfPage:%ld", (long)countOfPage);
-    
-    //滚动索引
-    if (self.isPreChapter) {
-        self.pageIndex = countOfPage - 1;
-    }
-    if (self.pageIndex >= countOfPage) {
-        self.pageIndex = countOfPage - 1;
-    }
-    if (self.pageIndex < 0) {
-        self.pageIndex = 0;
-    }
-    
-    NSLog(@"self.pageIndex:%lo", self.pageIndex);
-    
-    if (self.pageIndex > -1 && self.pageIndex < countOfPage && countOfPage > 0) {
-        if (self.parserManager.settingManager.currentSearchText.length > 0) {
-            [(EpubPageWebView*)theWebView highlightAllOccurencesOfString:self.parserManager.settingManager.currentSearchText];
-        }
-
-        [self gotoIndexOfPageWithIndex:self.pageIndex andCountOfPage:countOfPage];
-    }
+#pragma mark - EpubPageWebViewDelegate
+- (void)showEpubPageWebView:(EpubPageWebView*)epubPageWebView {
+    [self gotoPageIndex];
 }
 
 @end

@@ -10,16 +10,31 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EpubPageWebView : UIWebView
+@class EpubPageWebView;
+
+@protocol EpubPageWebViewDelegate <NSObject>
+
+- (void)showEpubPageWebView:(EpubPageWebView*)epubPageWebView;
+
+@end
+
+@interface EpubPageWebView : UIView
+
+@property (strong, nonatomic) UIWebView *webView;
+@property (weak, nonatomic) EpubParserManager *parserManager;
+@property (weak, nonatomic) id<EpubPageWebViewDelegate> delegate;
+
 + (NSString*)HTMLContentFromFile:(NSString*)fileFullPath AddJsContent:(NSString*)jsContent;
 + (NSString*)jsContentWithSetting:(ReaderSettingManager*)settingManager;
 
-- (void)loadHTMLWithPath:(NSString*)filePath jsContent:(NSString *)jsContent;
+- (void)loadHTMLWithChapterFileName:(NSString*)chapterFileNameStr jsContent:(NSString *)jsContent;
 
 - (NSInteger)highlightAllOccurencesOfString:(NSString*)str;
 - (void)removeAllHighlights;
 
 - (NSString *)getImageContentFromPoint:(CGPoint)point;
+
+- (void)scrollToPageByIndex:(NSInteger)index;
 @end
 
 NS_ASSUME_NONNULL_END

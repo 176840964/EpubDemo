@@ -9,16 +9,22 @@
 #import "EpubPageWebView.h"
 #import "CustomFileManager.h"
 
+@interface EpubPageWebView () <UIWebViewDelegate>
+@property (copy, nonatomic) NSString *chapterFileNameStr;
+@end
+
 @implementation EpubPageWebView
 
 - (void)awakeFromNib {
     [super awakeFromNib];
 }
 
-- (void)loadHTMLWithPath:(NSString*)filePath jsContent:(NSString *)jsContent {
+- (void)loadHTMLWithChapterFileName:(NSString*)chapterFileNameStr jsContent:(NSString *)jsContent {
+    self.chapterFileNameStr = chapterFileNameStr;
+    NSString *filePath = [NSString stringWithFormat:@"%@%@", self.parserManager.contentFilesFolder, self.chapterFileNameStr];
     NSString *htmlContent = [self.class HTMLContentFromFile:filePath AddJsContent:jsContent];
     NSURL *baseUrl = [NSURL fileURLWithPath:filePath];
-    [self loadHTMLString:htmlContent baseURL:baseUrl];
+    [self.webView loadHTMLString:htmlContent baseURL:baseUrl];
 }
 
 /*
@@ -29,6 +35,7 @@
 }
 */
 
+#pragma mark - js method
 + (NSString*)HTMLContentFromFile:(NSString*)fileFullPath AddJsContent:(NSString*)jsContent {
     NSString *strHTML=nil;
     
@@ -111,6 +118,14 @@
     [arrJs addObject:@"}"];
     
     [arrJs addObject:@"addCSSRule('p', 'text-align: justify;');"];
+    {
+        [arrJs addObject:@"addCSSRule('meta', 'name=viewport')"];
+        [arrJs addObject:@"addCSSRule('meta', 'content=\"width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no;\"')"];
+    }
+    {
+        NSString *css1 =[NSString stringWithFormat:@"addCSSRule('html', 'padding: 0px; height: %@px; -webkit-column-gap: 0px; -webkit-column-width: %@px;');",@(settingManager.containerSize.height),@(settingManager.containerSize.width)];//padding 内边距属性 ； -webkit-column-gap 列间距 ； -webkit-column-width 列宽
+        [arrJs addObject:css1];
+    }
     {//行间距
         // <p>
         NSString *addcss_spacing1 = [NSString stringWithFormat:@"addCSSRule('p', 'line-height: %@;');", @(settingManager.currentSpacingIndex)];
@@ -150,10 +165,6 @@
         [arrJs addObject:addcss_pTextColor];
     }
     [arrJs addObject:@"addCSSRule('body', ' margin:0 0 0 0;');"];//上，右，下，左 顺时针
-    {
-        NSString *css1=[NSString stringWithFormat:@"addCSSRule('html', 'padding: 0px; height: %@px; -webkit-column-gap: 0px; -webkit-column-width: %@px;');",@(settingManager.containerSize.height),@(settingManager.containerSize.width)];//padding 内边距属性 ； -webkit-column-gap 列间距 ； -webkit-column-width 列宽
-        [arrJs addObject:css1];
-    }
     
     [arrJs addObject:@"</script>"];
     
@@ -174,36 +185,98 @@
     return jsFontStyle;
 }
 
-//高亮
 - (NSInteger)highlightAllOccurencesOfString:(NSString*)str {
     NSString *path = [[NSBundle mainBundle] pathForResource:@"SearchWebView" ofType:@"js"];
     NSString *jsCode = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    [self stringByEvaluatingJavaScriptFromString:jsCode];
+    [self.webView stringByEvaluatingJavaScriptFromString:jsCode];
     
     NSString *startSearch = [NSString stringWithFormat:@"MyApp_HighlightAllOccurencesOfString('%@');",str];
-    [self stringByEvaluatingJavaScriptFromString:startSearch];
+    [self.webView stringByEvaluatingJavaScriptFromString:startSearch];
     
     //    NSLog(@"%@", [self stringByEvaluatingJavaScriptFromString:@"console"]);
-    return [[self stringByEvaluatingJavaScriptFromString:@"MyApp_SearchResultCount;"] intValue];
+    return [[self.webView stringByEvaluatingJavaScriptFromString:@"MyApp_SearchResultCount;"] intValue];
 }
 
 - (void)removeAllHighlights {
-    [self stringByEvaluatingJavaScriptFromString:@"MyApp_RemoveAllHighlights()"];
+    [self.webView stringByEvaluatingJavaScriptFromString:@"MyApp_RemoveAllHighlights()"];
 }
 
 - (NSString *)getImageContentFromPoint:(CGPoint)point {
     NSString *js = [NSString stringWithFormat:@"document.elementFromPoint(%f, %f).tagName", point.x, point.y];
-    NSString *tagName = [self stringByEvaluatingJavaScriptFromString:js];
+    NSString *tagName = [self.webView stringByEvaluatingJavaScriptFromString:js];
     if ([[tagName uppercaseString] isEqualToString:@"IMG"]) {
         NSString *imgUrl = [NSString stringWithFormat:@"document.elementFromPoint(%f, %f).src", point.x, point.y];
-        NSString *fileUrl = [self stringByEvaluatingJavaScriptFromString:imgUrl];
+        NSString *fileUrl = [self.webView stringByEvaluatingJavaScriptFromString:imgUrl];
         NSString *filePath = [fileUrl stringByReplacingOccurrencesOfString:@"file://" withString:@""].stringByRemovingPercentEncoding;
         
         if ([CustomFileManager isFileExist:filePath]) {
             return filePath;
         }
+    } else if ([[tagName uppercaseString] isEqualToString:@"SPAN"]) {
+//        NSString *urlStr = [NSString stringWithFormat:@"document.elementFromPoint(%f, %f).parentNode.href", point.x, point.y];
+//        NSString *hrefStr = [self stringByEvaluatingJavaScriptFromString:urlStr];
+//        NSLog(@"span parentNode href:%@", hrefStr);
     }
     return nil;
+}
+
+- (void)scrollToPageByIndex:(NSInteger)index {
+    CGFloat pageOffset = index * self.bounds.size.width;
+    
+    NSString* goToOffsetFunc = [NSString stringWithFormat:@" function pageScroll(xOffset){ window.scroll(xOffset,0); } "];
+    NSString* goTo = [NSString stringWithFormat:@"pageScroll(%f)", pageOffset];
+    
+    [self.webView stringByEvaluatingJavaScriptFromString:goToOffsetFunc];
+    [self.webView stringByEvaluatingJavaScriptFromString:goTo];
+}
+
+#pragma mark - UIWebViewDelegate
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked )
+    {
+        //禁止内容里面的超链接
+        return NO;
+    }
+    return YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)theWebView {
+    BOOL isCalc = [self.parserManager.chapterPageInfoDic.allKeys containsObject:self.chapterFileNameStr];
+    
+    if (!isCalc) {
+        //需要计算  页面的信息
+        NSInteger totalWidth = [[theWebView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollWidth"] integerValue];
+        NSLog(@"totalWidth  %@", @(totalWidth));
+        
+        NSInteger theWebSizeWidth = theWebView.bounds.size.width;
+        NSInteger countOfPage = (NSInteger)((float)totalWidth / theWebSizeWidth);
+        
+        [self.parserManager.chapterPageInfoDic setObject:@(countOfPage) forKey:self.chapterFileNameStr];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(showEpubPageWebView:)]) {
+        [self.delegate showEpubPageWebView:self];
+    }
+}
+
+#pragma mark - lazy load
+- (UIWebView *)webView {
+    if (nil == _webView) {
+        _webView = [[UIWebView alloc] initWithFrame:self.bounds];
+        _webView.delegate = self;
+        
+        for (UIView* v in _webView.subviews){
+            if([v isKindOfClass:[UIScrollView class]]) {
+                UIScrollView *sv = (UIScrollView*)v;
+                sv.scrollEnabled = NO;
+                sv.bounces = NO;
+            }
+        }
+        
+        [self addSubview:_webView];
+    }
+    
+    return _webView;
 }
 
 @end

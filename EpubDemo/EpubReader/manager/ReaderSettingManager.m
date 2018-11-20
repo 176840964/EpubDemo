@@ -27,9 +27,9 @@
         NSDictionary *theme2 = @{@"body": @"#000000", @"text": @"#ffffff", @"highlight": @"#c7edcc"};
         NSDictionary *theme3 = @{@"body": @"#c7edcc", @"text": @"#000000", @"highlight": @"#333333"};
         self.themeArr = [NSArray arrayWithObjects:theme1, theme2, theme3, nil];
-        self.currentThemeIndex = 0;
+        self.currentThemeIndex = 2;
         
-        self.pagingType = 0;
+        self.pagingType = 1;
         
         self.currentSearchText = @"";
         self.searchResultArr = [[NSMutableArray alloc] init];

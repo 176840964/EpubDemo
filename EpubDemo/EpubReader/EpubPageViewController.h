@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "EpubParserManager.h"
 
+typedef NS_ENUM(NSUInteger, PageViewShowType) {
+    PageViewShowTypeOfWKWebView = 0,
+    PageViewShowTypeOfUIWebView,
+};
+
 @class EpubPageViewController;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface EpubPageViewController : UIViewController
+
+@property (assign, nonatomic) PageViewShowType showType;
 
 @property (weak, nonatomic) EpubParserManager *parserManager;
 

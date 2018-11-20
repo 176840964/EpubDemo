@@ -11,7 +11,7 @@
 
 @interface EpubSearchViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIWebViewDelegate>
 @property (strong, atomic) NSCondition *condition;
-@property (strong, nonatomic) EpubPageWebView *webView;
+@property (strong, nonatomic) EpubPageWebView *pageView;
 @property (copy, nonatomic) NSString *chapterNameStr;
 @end
 
@@ -25,10 +25,11 @@
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SearchCell"];
     
-    self.webView = [[EpubPageWebView alloc] init];
-    self.webView.delegate = self;
+    self.pageView = [[EpubPageWebView alloc] init];
+    self.pageView.parserManager = self.parserManager;
     CGSize size = self.parserManager.settingManager.containerSize;
-    self.webView.frame = CGRectMake(0, 0, size.width, size.height);
+    self.pageView.webView.frame = CGRectMake(0, 0, size.width, size.height);
+    self.pageView.webView.delegate = self;
     
     if (self.parserManager.settingManager.currentSearchText.length > 0) {
         self.searchBar.text = self.parserManager.settingManager.currentSearchText;
@@ -119,8 +120,8 @@
             
             if (findCount > 0) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.webView.tag = index;
-                    [self.webView loadHTMLWithPath:filePath jsContent:self.parserManager.jsContent];
+                    self.pageView.webView.tag = index;
+                    [self.pageView loadHTMLWithChapterFileName:fileNameStr jsContent:self.parserManager.jsContent];
                 });
                 
                 [self.condition lock];
@@ -147,7 +148,7 @@
 
 #pragma mark - UIWebViewDelegate
 -(void)webViewDidFinishLoad:(UIWebView*)webView {
-    NSInteger isFind=[(EpubPageWebView*)webView highlightAllOccurencesOfString:self.searchBar.text];
+    NSInteger isFind=[self.pageView highlightAllOccurencesOfString:self.searchBar.text];
     if (isFind) {
         NSString *foundHits = [webView stringByEvaluatingJavaScriptFromString:@"results"];
         
